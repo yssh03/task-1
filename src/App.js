@@ -3,7 +3,7 @@ import './App.css';
 import LoginPage from "./components/login/LoginPage";
 import AboutUs from "./components/pages/AboutUs";
 import ContactUs from "./components/pages/ContactUs";
-import Home from "./components/product/Home";
+import Home from "./components/pages/Home";
 import Product from "./components/product/Product";
 import ProductDetails from "./components/product/ProductDetails"
 

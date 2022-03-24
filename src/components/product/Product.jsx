@@ -18,13 +18,12 @@ import { setProduct } from "../../redux/actions/productAction";
 
 function Product() {
   // console.log(data);
-  
+
   const dispatch = useDispatch();
-  
+
   const products = useSelector((state) => state.allProducts.products);
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
-  
 
   // const [products, setProducts] = useState(null);
   // useSelector((state) => {
@@ -42,17 +41,16 @@ function Product() {
     await dispatch(setProduct(response.data));
     await setData(response.data);
     console.log("loaded");
-    await setFlag(!flag)
+    await setFlag(!flag);
   };
 
   useEffect(() => {
-      fetchProduct();
-  },[]);
+    fetchProduct();
+  }, []);
 
   // useEffect(() => {
-    console.log("out products" ,data);
+  console.log("out products", data);
   // })
-  
 
   const handleSort = (param) => {
     console.log("clicked");
@@ -70,10 +68,9 @@ function Product() {
     // setProducts(sortedData);
     dispatch(setProduct(sortedData));
     setData(sortedData);
-    setFlag(!flag)
+    setFlag(!flag);
     console.log("Product :", data);
     console.log("sorted data : ", sortedData);
-
   };
 
   return (
@@ -81,19 +78,18 @@ function Product() {
       <Headers />
 
       {data && Object.keys(data).length === 0 ? (
-        <Segment>
-          <Dimmer active inverted>
-            <Loader inverted>Loading</Loader>
-          </Dimmer>
-          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-        </Segment>
+        <div
+          class="ui active centered inline loader"
+          style={{ marginTop: "20px" }}
+        ></div>
       ) : (
         <div>
           <div
             style={{
               display: "flex",
               justifyContent: "flex-end",
-              marginRight: "20px",
+              marginTop: "20px",
+              marginBottom:"10px"
             }}
           >
             <button
@@ -104,12 +100,13 @@ function Product() {
             </button>
           </div>
           <div>
-            {console.log('asdsad')}
+            {console.log("asdsad")}
             <Grid columns={4} divided>
               <Grid.Row>
-                {data && data.length &&
+                {data &&
+                  data.length &&
                   data.map((product) => (
-                    <Grid.Column style={{ marginTop: "10px" }} key={product.id}>
+                    <Grid.Column style={{ marginTop: "10px",marginLeft:"20px", marginRight:"-20px" }} key={product.id}>
                       <Link to={`/product/${product.id}`}>
                         <Card>
                           <Image

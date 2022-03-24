@@ -53,12 +53,8 @@ function ProductDetails() {
     <> 
     <Headers />
       {Object.keys(product).length === 0 ? (
-        <Segment>
-          <Dimmer active inverted>
-            <Loader inverted>Loading</Loader>
-          </Dimmer>
-          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-        </Segment>
+            <Loader active inline='centered' />
+
       ) : (
         <div style={{ paddingLeft: "50px" }}>
           <Grid>
