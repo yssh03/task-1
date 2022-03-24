@@ -1,0 +1,9 @@
+login - if required to use token for further APIs.
+responsive-menu in the header - for small screen it should be converted to left-side menu with toggle icon - search will be right-side of the header & for sidemenu, it should be on the top of the list.
+Breadcrumb
+Products 
+    - List of products that you have implemented using redux with search (search will be in the header component only & will be visible when you visit Products page. On search from there you need to filter the products based on category), 
+    - List should have a button on the top to sort it alphabetically
+Product Details - show selected product details
+About Us - static page with your information, 
+Contact Us - static page with your contact details
