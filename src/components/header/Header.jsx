@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { searchProduct, setProduct } from "../../redux/actions/productAction";
-// import { searchProductReducer } from "../../redux/reducer/productReducer";
 import "./Header.css";
 
 function Header() {
@@ -12,7 +11,6 @@ function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const products = useSelector((state) => state.allProducts.products);
-  // console.log(products);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -29,7 +27,6 @@ function Header() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(searchValue);
     dispatch(searchProduct(searchValue, products));
   };
 
@@ -42,25 +39,17 @@ function Header() {
           </div>
           <div className="navbar-leftside">
             <div className="links" id={showLinks ? "hidden" : ""}>
-              <a className="home" href="/home">
-                Home
-              </a>
-              <a className="products" href="/product">
-                Products
-              </a>
-              <a className="about" href="/about">
-                About Us
-              </a>
-              <a className="contact" href="/contact">
-                Contact Us
-              </a>
+              <Link to={"/home"}>Home</Link>
+              <Link to={"/product"}>Product</Link>
+              <Link to={"/about"}>About Us</Link>
+              <Link to={"/contact"}>Contact Us</Link>
             </div>
             <button onClick={() => setShowLinks(!showLinks)}>
               <i aria-hidden="true" class="bars icon"></i>
             </button>
           </div>
           {showSearch && (
-            <div className="navbar-rightside">
+            <div className="navbar-rightside" >
               <form>
                 <input
                   type="text"
@@ -68,7 +57,7 @@ function Header() {
                   value={searchValue}
                   onChange={(e) => {
                     setSearchValue(e.target.value);
-                    dispatch(searchProduct(searchValue, products))
+                    dispatch(searchProduct(searchValue, products));
                   }}
                 />
                 <button type="submit" onClick={handleSearch}>

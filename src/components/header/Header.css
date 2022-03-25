@@ -5,18 +5,6 @@
     padding: 0px;
 }
 
-.breadcrumb {
-    margin-bottom: 10px;
-    justify-content: left;
-    display: flex;
-    margin-left: 89px;
-    margin-top: -3px;
-}
-
-.breadcrumb-section {
-    color: #5ab6ad;
-}
-
 .navbar {
     height: 60px;
     width: 100%;
@@ -24,7 +12,6 @@
     background-color: rgb(255, 255, 255);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin-bottom: 10px;
-    /* background-color: black; */
 }
 
 .navbar .navbar-logo P {
@@ -60,22 +47,11 @@
 }
 
 a:active {
-    /* color: black; */
     text-decoration: underline;
 }
 
-
-/* .home,
-.products,
-.about,
-.contact,
-.logout {
-  margin: 0px 10px;
-} */
-
 .navbar .navbar-leftside button i {
     display: none;
-    /* height: 25px; */
 }
 
 .navbar .navbar-leftside #hidden {
@@ -89,12 +65,11 @@ a:active {
     justify-content: flex-end;
     color: black;
     max-height: 50px;
-    margin-right: 15px;
+    margin-right: 25px;
 }
 
 .navbar .navbar-rightside a:hover {
     box-shadow: 1px 1px 2px beige;
-    /* text-decoration: underline */
 }
 
 .navbar .navbar-rightside a {
@@ -104,19 +79,15 @@ a:active {
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
-    /* text-decoration: azure;
-   */
     color: white;
     padding: 0px 10px;
     padding-bottom: 5px;
     background-color: rgb(0, 0, 0);
-    /* height: 25px; */
-    /* border: solid; */
 }
 
 .navbar-rightside input {
     width: 200px;
-    height: 25px;
+    height: 30px;
     border: solid;
     border-width: 1px;
     border-radius: 4px;
@@ -128,7 +99,7 @@ a:active {
 }
 
 .navbar-rightside button {
-    height: 25px;
+    height: 30px;
     width: 50px;
     color: white;
     background-color: black;
@@ -136,8 +107,13 @@ a:active {
     border-width: 1px;
     border-color: black;
     align-items: center;
-    padding: 0px 10px;
+    /* padding: 0px 10px; */
     border-radius: 4px;
+    margin-right: 10px;
+}
+
+.navbar-rightside {
+    margin-right: 50px;
 }
 
 .navbar-rightside button:hover {
@@ -146,7 +122,6 @@ a:active {
 }
 
 input:hover {
-    /* cursor:pointer; */
     box-shadow: 1px 1px 2px #8eb1b0;
 }
 
@@ -179,7 +154,7 @@ input:hover {
         display: none;
     }
     .navbar .navbar-leftside #hidden {
-        z-index: 1  ;
+        z-index: 1;
         position: absolute;
         left: 0px;
         top: 60px;
@@ -195,11 +170,24 @@ input:hover {
         color: rgb(255, 255, 255);
         margin-top: 10px;
         font-size: 17px;
-        /* border: solid; */
     }
     .navbar .navbar-leftside #hidden a:hover {
-        /* text-decoration: underline; */
         border-bottom: solid 1px;
+    }
+    .navbar-rightside input {
+        width: 150px;
+    }
+    .navbar-rightside button {
+        width: 40px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .navbar-rightside input {
+        width: 130px;
+    }
+    .navbar-rightside button {
+        width: 30px;
     }
 }
 
@@ -209,6 +197,21 @@ input:hover {
         width: 40px;
         margin-top: 10px;
     }
+    .navbar-rightside input {
+        width: 120px;
+    }
+    .navbar-rightside button {
+        width: 30px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .navbar-rightside input {
+        width: 100px;
+    }
+    .navbar-rightside button {
+        width: 28px;
+    }
 }
 
 @media screen and (max-width: 400px) {
@@ -217,5 +220,20 @@ input:hover {
         width: 30px;
         margin-top: 15px;
         margin-right: 15px;
+    }
+    .navbar-rightside input {
+        width: 80px;
+    }
+    .navbar-rightside button {
+        width: 25px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .navbar-rightside input {
+        width: 70px;
+    }
+    .navbar-rightside button {
+        width: 20px;
     }
 }

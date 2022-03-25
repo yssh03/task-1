@@ -10,18 +10,11 @@ import { setProduct } from "../../redux/actions/productAction";
 import Breadcrumb from "../header/Breadcrumb";
 
 function Product() {
-  // console.log(data);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.allProducts.filteredProducts);
-  const filteredProducts = useSelector((state) => state.allProducts.filteredProducts);
-  console.log("type", products);
-  // const [products, setProducts] = useState(null)
-  //  useSelector((state) => state.allProducts.products);
 
   const [data, setData] = useState([]);
-  console.log("type data", data);
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {
@@ -32,7 +25,6 @@ function Product() {
       .get("https://fakestoreapi.com/products")
       .catch((error) => console.log("Error: ", error));
 
-    // setData(response.data);/
     await dispatch(setProduct(response.data));
     await setData(response.data);
     await setFlag(!flag);
@@ -60,7 +52,6 @@ function Product() {
     setData(sortedData);
     setFlag(!flag);
   };
-  // console.log(data.filter(data.category.toLowerCase().includes("je")))
 
   return (
     <>
@@ -85,7 +76,7 @@ function Product() {
               className="ui secondary button"
               onClick={() => handleSort(data)}
             >
-              Sort by Name
+              Sort
             </button>
           </div>
           <div>
@@ -102,7 +93,6 @@ function Product() {
                       }}
                       key={product.id}
                     >
-                      {/* <Link to={`/product/product-details`}> */}
                       <Card>
                         <Image
                           src={product.image}
@@ -133,7 +123,6 @@ function Product() {
                           </button>
                         </Card.Content>
                       </Card>
-                      {/* </Link> */}
                     </Grid.Column>
                   ))}
               </Grid.Row>
