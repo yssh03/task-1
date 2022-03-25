@@ -1,14 +1,6 @@
 import React from "react";
 import Headers from "../header/Header";
-import {
-  Grid,
-  Image,
-  Card,
-  Icon,
-  Dimmer,
-  Loader,
-  Segment,
-} from "semantic-ui-react";
+import { Grid, Image, Card, Icon } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -89,7 +81,7 @@ function Product() {
               display: "flex",
               justifyContent: "flex-end",
               marginTop: "20px",
-              marginBottom:"10px"
+              marginBottom: "10px",
             }}
           >
             <button
@@ -106,8 +98,15 @@ function Product() {
                 {data &&
                   data.length &&
                   data.map((product) => (
-                    <Grid.Column style={{ marginTop: "10px",marginLeft:"20px", marginRight:"-20px" }} key={product.id}>
-                      <Link to={`/product/${product.id}`}>
+                    <Grid.Column
+                      style={{
+                        marginTop: "10px",
+                        marginLeft: "20px",
+                        marginRight: "-20px",
+                      }}
+                      key={product.id}
+                    >
+                      <Link to={`/product/product-details`}>
                         <Card>
                           <Image
                             src={product.image}

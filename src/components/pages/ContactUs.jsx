@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../header/Header";
-import { Grid, Icon, Card, Button, Message, Image } from "semantic-ui-react";
 
 function ContactUs() {
   return (

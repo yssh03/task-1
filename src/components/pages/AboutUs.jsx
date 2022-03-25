@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../header/Header";
-import { Grid, Image } from "semantic-ui-react";
 
 function AboutUs() {
   return (
@@ -11,7 +10,6 @@ function AboutUs() {
           display: "inline-block",
           justifyContent: "center",
           marginTop: "30px",
-
           width: "700px",
           margin: "20px 0px",
           paddingBottom: "20px",
