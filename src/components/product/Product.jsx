@@ -2,28 +2,31 @@ import React from "react";
 import Headers from "../header/Header";
 import { Grid, Image, Card, Icon } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../AxiosUtils";
 import { useDispatch } from "react-redux";
 import { setProduct } from "../../redux/actions/productAction";
+import Breadcrumb from "../header/Breadcrumb";
 
 function Product() {
   // console.log(data);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const products = useSelector((state) => state.allProducts.filteredProducts);
+  const filteredProducts = useSelector((state) => state.allProducts.filteredProducts);
+  console.log("type", products);
+  // const [products, setProducts] = useState(null)
+  //  useSelector((state) => state.allProducts.products);
 
-  const products = useSelector((state) => state.allProducts.products);
   const [data, setData] = useState([]);
+  console.log("type data", data);
   const [flag, setFlag] = useState(false);
 
-  // const [products, setProducts] = useState(null);
-  // useSelector((state) => {
-  //   state.allProducts.products &&
-  //     state.allProducts.products?.length &&
-  //     setProducts(state.allProducts.products);
-  //     console.log(state.allProducts.products);
-  // });
+  useEffect(() => {
+    setData(products);
+  }, [products]);
   const fetchProduct = async () => {
     const response = await axiosInstance
       .get("https://fakestoreapi.com/products")
@@ -32,7 +35,6 @@ function Product() {
     // setData(response.data);/
     await dispatch(setProduct(response.data));
     await setData(response.data);
-    console.log("loaded");
     await setFlag(!flag);
   };
 
@@ -40,35 +42,30 @@ function Product() {
     fetchProduct();
   }, []);
 
-  // useEffect(() => {
-  console.log("out products", data);
-  // })
-
   const handleSort = (param) => {
     console.log("clicked");
     const sortedData = param.sort((a, b) => {
-      var titleA = a.title.toUpperCase(); // ignore upper and lowercase
-      var titleB = b.title.toUpperCase(); // ignore upper and lowercase
+      var titleA = a.title.toUpperCase();
+      var titleB = b.title.toUpperCase();
       if (titleA < titleB) {
-        return -1; //nameA comes first
+        return -1;
       }
       if (titleA > titleB) {
-        return 1; // nameB comes first
+        return 1;
       }
       return 0;
     });
-    // setProducts(sortedData);
+
     dispatch(setProduct(sortedData));
     setData(sortedData);
     setFlag(!flag);
-    console.log("Product :", data);
-    console.log("sorted data : ", sortedData);
   };
+  // console.log(data.filter(data.category.toLowerCase().includes("je")))
 
   return (
     <>
       <Headers />
-
+      <Breadcrumb />
       {data && Object.keys(data).length === 0 ? (
         <div
           class="ui active centered inline loader"
@@ -92,7 +89,6 @@ function Product() {
             </button>
           </div>
           <div>
-            {console.log("asdsad")}
             <Grid columns={4} divided>
               <Grid.Row>
                 {data &&
@@ -106,27 +102,38 @@ function Product() {
                       }}
                       key={product.id}
                     >
-                      <Link to={`/product/product-details`}>
-                        <Card>
-                          <Image
-                            src={product.image}
-                            fluid={true}
-                            size={"small"}
-                          />
-                          <Card.Content>
-                            <Card.Header>{product.title}</Card.Header>
-                            <Card.Content
-                              style={{
-                                color: "grey",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              <Icon name="dollar sign" />
-                              {product.price}
-                            </Card.Content>
+                      {/* <Link to={`/product/product-details`}> */}
+                      <Card>
+                        <Image
+                          src={product.image}
+                          fluid={true}
+                          size={"small"}
+                        />
+                        <Card.Content>
+                          <Card.Header>{product.title}</Card.Header>
+                          <Card.Content
+                            style={{
+                              color: "grey",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            <Icon name="dollar sign" />
+                            {product.price}
                           </Card.Content>
-                        </Card>
-                      </Link>
+                          <button
+                            class="ui secondary button"
+                            style={{ marginTop: "5px" }}
+                            onClick={() =>
+                              navigate(`/product/product-details`, {
+                                state: product.id,
+                              })
+                            }
+                          >
+                            Buy
+                          </button>
+                        </Card.Content>
+                      </Card>
+                      {/* </Link> */}
                     </Grid.Column>
                   ))}
               </Grid.Row>

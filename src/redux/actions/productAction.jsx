@@ -23,10 +23,18 @@ export const removeSelectedProduct = () =>{
 }
 
 
-export const filteredProduct = (products)=>{
+export const searchProduct = (searchData,data)=>{
+    // const filteredSearch =
+    //     data.filter((item) => item.category === searchData);
+
+    //    console.log("in action ",searchData); 
+    //    console.log("in action ",filteredSearch); 
+
     return {
-        type: ActionTypes.FILTERED_PRODUCTS,
-        payload: products
+        type: ActionTypes.SEARCH_PRODUCTS,
+        payload: {
+            products : searchData === "" ? data : data.filter((item) => item?.category?.toLowerCase().includes(searchData.toLowerCase()))
+        }
     }
 }
 // export const addCart = (products) =>{

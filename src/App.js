@@ -6,7 +6,6 @@ import ContactUs from "./components/pages/ContactUs";
 import Home from "./components/pages/Home";
 import Product from "./components/product/Product";
 import ProductDetails from "./components/product/ProductDetails";
-import Breadcrumb from "./components/header/Breadcrumb";
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
 
-          <Route path="/breadcrumb/111/111/111" element={<Breadcrumb />} />
         </Routes>
       </BrowserRouter>
     </div>

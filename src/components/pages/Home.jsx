@@ -3,12 +3,14 @@ import Header from "../header/Header";
 import { Grid, Image } from "semantic-ui-react";
 import sale from "../../assets/18924.png";
 import { useNavigate } from "react-router-dom";
+import Breadcrumb from "../header/Breadcrumb";
 
 function Home() {
   const navigate = useNavigate()
   return (
     <>
       <Header />
+      <Breadcrumb />
       <div style={{ margin: "50px 10px" }}>
         <Grid>
           <Grid.Column width={6}>

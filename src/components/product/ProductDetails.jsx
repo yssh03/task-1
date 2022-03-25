@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   Grid,
@@ -17,6 +17,7 @@ import {
   selectedProduct,
 } from "../../redux/actions/productAction";
 import axiosInstance from "../AxiosUtils";
+import Breadcrumb from "../header/Breadcrumb";
 import Headers from "../header/Header";
 
 
@@ -27,6 +28,8 @@ function ProductDetails() {
     const { title, description, price, category, image } = product;
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {state} = useLocation();
+    console.log("state :", state);
     const token = localStorage.getItem("token");
   
  
@@ -36,7 +39,7 @@ function ProductDetails() {
       }
     }, [navigate, token]);
     useEffect(() => {
-      productID && productID !== "" && fetchProduct();
+      state && fetchProduct();
       return () => {
         dispatch(removeSelectedProduct());
       };
@@ -44,7 +47,7 @@ function ProductDetails() {
   
     const fetchProduct = async () => {
       const response = await axiosInstance
-        .get(`https://fakestoreapi.com/products/${productID}`)
+        .get(`https://fakestoreapi.com/products/${state}`)
         .catch((error) => console.log("Error : ", error));
   
       dispatch(selectedProduct(response.data));
@@ -52,11 +55,12 @@ function ProductDetails() {
   return (
     <> 
     <Headers />
+    <Breadcrumb />
       {Object.keys(product).length === 0 ? (
             <Loader active inline='centered' />
 
       ) : (
-        <div style={{ paddingLeft: "50px" }}>
+        <div style={{ paddingLeft: "100px", margin:"20px" }}>
           <Grid>
             <Grid.Column width={4}>
               <Image src={image} />
@@ -85,7 +89,7 @@ function ProductDetails() {
                 </div>
               </Card>
             </Grid.Column>
-            <Grid.Column width={4}>
+            <Grid.Column width={8}>
               <Card>
                 <Card.Content description={description} />
               </Card>

@@ -2,15 +2,19 @@ import { ActionTypes } from "../constant/constants";
 
 const initialState = {
   products: [],
+  filteredProducts : []
 };
 
-const cart = [];
+// const cart = [];
 
 export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_PRODUCTS:
-      return { ...state, products: action.payload };
+      return { ...state, products: action.payload, filteredProducts : action.payload };
 
+    case ActionTypes.SEARCH_PRODUCTS:      
+      return {...state, filteredProducts :action.payload.products};
+      
     default:
       return state;
   }
@@ -28,14 +32,22 @@ export const selectedProductReducer = (state = {}, action) => {
   }
 };
 
-
-// export const searchProduct = (state ={}, action) =>{
-//   const product = action.payload;
-//   switch (action.type){
+// export const searchProductReducer = (state = initialState, action) => {
+//   const searchValue = action.payload;
+//   switch (action.type) {
 //     case ActionTypes.FILTERED_PRODUCTS:
-//       const filteredProduct = product.filter((x) => x.title === product.tit)
+//       return state.filter((item) => {
+//         return Object.values(item)
+//           .join("")
+//           .toLowerCase()
+//           .includes(searchValue.toLowerCase());
+//       });
+
+//     default:
+//       return state;
 //   }
-// }
+// };
+
 // export const handleCart = (state = cart, action) => {
 //   const product = action.payload;
 //   switch (action.type) {

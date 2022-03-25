@@ -1,10 +1,12 @@
 import React from "react";
+import Breadcrumb from "../header/Breadcrumb";
 import Header from "../header/Header";
 
 function AboutUs() {
   return (
     <>
       <Header />
+      <Breadcrumb />
       <div
         style={{
           display: "inline-block",

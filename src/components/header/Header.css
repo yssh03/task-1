@@ -179,6 +179,7 @@ input:hover {
         display: none;
     }
     .navbar .navbar-leftside #hidden {
+        z-index: 1  ;
         position: absolute;
         left: 0px;
         top: 60px;

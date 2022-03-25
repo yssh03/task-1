@@ -1,36 +1,37 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { Breadcrumb, Icon, Menu, Segment } from "semantic-ui-react";
-import productLogo from "../../assets/product.png";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { searchProduct, setProduct } from "../../redux/actions/productAction";
+// import { searchProductReducer } from "../../redux/reducer/productReducer";
 import "./Header.css";
 
-const sections = [
-  { key: "home", content: "Home", link: true },
-  { key: "search", content: "Search", active: true },
-];
-
 function Header() {
-  const [activeItem, setActiveItem] = useState("Home");
   const [showLinks, setShowLinks] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const products = useSelector((state) => state.allProducts.products);
+  // console.log(products);
+  const dispatch = useDispatch();
   const location = useLocation();
-  const {productID} = useParams()
 
-  const navigate = useNavigate();
   useEffect(() => {
-    location.pathname === "/product" || location.pathname === `/product/${productID}` ? setShowSearch(true) : setShowSearch(false)
+    location.pathname === "/product" ||
+    location.pathname === "/product/product-details"
+      ? setShowSearch(true)
+      : setShowSearch(false);
+  }, [location.pathname]);
 
-     
-  }, [location.pathname])
-  
-  // const handleItemClick = (args) => {
-  //   setActiveItem(args);
-  //   if (args === "Home") navigate("/home");
-  //   if (args === "Products") navigate("/product");
-  //   if (args === "About Us") navigate("/about");
-  //   if (args === "Contact Us") navigate("/contact");
-  // };
+  useEffect(() => {
+    searchValue === "" && dispatch(setProduct(products));
+  }, [searchValue]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(searchValue);
+    dispatch(searchProduct(searchValue, products));
+  };
 
   return (
     <>
@@ -60,99 +61,23 @@ function Header() {
           </div>
           {showSearch && (
             <div className="navbar-rightside">
-              <input type="text" placeholder="Search..." />
-              <button>
-                <i aria-hidden="true" class="search icon"></i>
-              </button>
+              <form>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                    dispatch(searchProduct(searchValue, products))
+                  }}
+                />
+                <button type="submit" onClick={handleSearch}>
+                  <i aria-hidden="true" class="search icon"></i>
+                </button>
+              </form>
             </div>
           )}
-          {/* <div className="navbar-rightside">
-            <a href="/login" className="logout">
-              Log Out
-            </a> 
-          </div> */}
         </div>
-        {/* <Menu color="teal" size="large">
-          <Menu.Item>
-            <img alt="logo" src={productLogo} />
-          </Menu.Item>
-          <div className="navbar-links">
-            <Menu.Item
-              name="Home"
-              active={activeItem === "Home"}
-              onClick={() => {
-                handleItemClick("Home");
-                //   navigate("/home");
-              }}
-            >
-              Home
-            </Menu.Item>
-          </div>
-
-          <div className="navbar-links">
-            <Menu.Item
-              name="Products"
-              active={activeItem === "Products"}
-              onClick={() => {
-                // setActiveItem("Products")
-                handleItemClick("Products");
-                //   navigate("/product");
-              }}
-            >
-              Products
-            </Menu.Item>
-          </div>
-
-          <div className="navbar-links">
-            <Menu.Item
-              name="About Us"
-              active={activeItem === "About Us"}
-              onClick={() => {
-                handleItemClick("About Us");
-                //   navigate("/about");
-              }}
-            >
-              About Us
-            </Menu.Item>
-          </div>
-
-          <div className="navbar-links">
-            <Menu.Item
-              name="Contact Us"
-              active={activeItem === "Contact Us"}
-              onClick={() => {
-                handleItemClick("Contact Us");
-                //   navigate("/contact");
-              }}
-            >
-              Contact Us
-            </Menu.Item>
-          </div>
-
-          <div className="navbar-links">
-            <Menu.Item
-              position="right"
-              onClick={() => {
-                navigate("/login");
-                localStorage.removeItem("token");
-              }}
-            >
-              Logout
-            </Menu.Item>
-          </div>
-        </Menu> */}
-        {/* <div className="breadcrumb">
-          <Breadcrumb size={"large"}>
-            <Breadcrumb.Section
-              link
-              href="/home"
-              className="breadcrumb-section"
-            >
-              {activeItem}
-            </Breadcrumb.Section>
-            <Breadcrumb.Divider icon="right chevron" />
-          </Breadcrumb>
-        </div> */}
       </div>
     </>
   );
