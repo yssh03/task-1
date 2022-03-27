@@ -4,8 +4,8 @@ import LoginPage from "./components/login/LoginPage";
 import AboutUs from "./components/pages/AboutUs";
 import ContactUs from "./components/pages/ContactUs";
 import Home from "./components/pages/Home";
-import Product from "./components/product/Product";
-import ProductDetails from "./components/product/ProductDetails";
+import Product from "./components/pages/product/Product";
+import ProductDetails from "./components/pages/product/ProductDetails";
 
 function App() {
   return (

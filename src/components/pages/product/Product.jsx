@@ -1,13 +1,13 @@
 import React from "react";
-import Headers from "../header/Header";
+import Headers from "../../header/Header";
 import { Grid, Image, Card, Icon } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axiosInstance from "../AxiosUtils";
+import axiosInstance from "../../AxiosUtils";
 import { useDispatch } from "react-redux";
-import { setProduct } from "../../redux/actions/productAction";
-import Breadcrumb from "../header/Breadcrumb";
+import { setProduct } from "../../../redux/actions/productAction";
+import Breadcrumb from "../../header/Breadcrumb";
 
 function Product() {
   const dispatch = useDispatch();
@@ -70,6 +70,8 @@ function Product() {
               justifyContent: "flex-end",
               marginTop: "20px",
               marginBottom: "10px",
+              marginRight:"10px",
+              letterSpacing: "2px",
             }}
           >
             <button
@@ -79,8 +81,7 @@ function Product() {
               Sort
             </button>
           </div>
-          <div>
-            <Grid columns={4} divided>
+          {/* <Grid columns={4} divided>
               <Grid.Row>
                 {data &&
                   data.length &&
@@ -126,8 +127,49 @@ function Product() {
                     </Grid.Column>
                   ))}
               </Grid.Row>
-            </Grid>
-          </div>
+            </Grid> */}
+          <div className="container mx-auto ">
+            {" "}
+            {/* <div className="grid grid-rows-1 grid-flow-col"> */}
+            <div class="grid  xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
+              {data &&
+                data.length &&
+                data.map((product) => (
+                  <div className="justify-center items-center border-2 border-gray-300 rounded-xl p-6 bg-black-100">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="h-52 mb-2"
+                    />
+                    <div>
+                      {" "}
+                      <p className="  text-justify font-bold text-2xl pt-2 pb-2 ">
+                        {product.title}
+                      </p>
+                      <p className="font-semibold my-2">
+                        <i
+                          class="dollar sign icon"
+                          style={{ fontWeight: "bold" }}
+                        ></i>
+                        {product.price}
+                      </p>
+                      <button
+                        class="ui secondary button"
+                        style={{ marginTop: "10px", letterSpacing: "2px" }}
+                        onClick={() =>
+                          navigate(`/product/product-details`, {
+                            state: product.id,
+                          })
+                        }
+                      >
+                        Buy
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            {/* </div> */}
+          </div>{" "}
         </div>
       )}
     </>

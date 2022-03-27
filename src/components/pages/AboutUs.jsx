@@ -12,7 +12,7 @@ function AboutUs() {
           display: "inline-block",
           justifyContent: "center",
           marginTop: "30px",
-          width: "700px",
+          width: "50%",
           margin: "20px 0px",
           paddingBottom: "20px",
         }}
@@ -42,7 +42,7 @@ function AboutUs() {
               justifyContent: "center",
               textJustify: "inter-word",
               height: "100px",
-              width: "500px",
+              width: "80%",
             }}
           >
             Hello this is me{" "}

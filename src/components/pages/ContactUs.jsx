@@ -18,35 +18,30 @@ function ContactUs() {
             borderRadius: "10px",
             boxShadow: "2px 2px 8px grey",
             marginBottom: "15px",
-            width: "700px",
+            width: "50%",
           }}
         >
-          want more?...
+          want more?... contact us on
         </p>
-        <p
-          style={{
-            fontSize: "30px",
-          }}
-        >
-          Contact On
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <div>
+
+        <div>
+          <div
+            style={{
+              display: "inline-block",
+              justifyContent: "center",
+              marginTop: "20px",
+              marginLeft: "50px",
+            }}
+          >
             <div
               class="ui icon message"
               style={{
-                width: "400px",
+                width: "80%",
               }}
             >
               <i aria-hidden="true" class="linkedin icon"></i>
               <div class="content">
-                <div class="header">
+                <div class="header" style={{ width: "50%" }}>
                   <a href="https://www.linkedin.com/in/yash-patel-a15a75221">
                     https://www.linkedin.com/in/yash-patel-a15a75221
                   </a>
@@ -57,7 +52,7 @@ function ContactUs() {
             <div
               class="ui icon message"
               style={{
-                width: "400px",
+                width: "80%",
               }}
             >
               <i aria-hidden="true" class="phone square icon"></i>
@@ -69,7 +64,7 @@ function ContactUs() {
             <div
               class="ui icon message"
               style={{
-                width: "400px",
+                width: "80%",
               }}
             >
               <i aria-hidden="true" class="at icon"></i>
@@ -81,7 +76,7 @@ function ContactUs() {
             <div
               class="ui icon message"
               style={{
-                width: "400px",
+                width: "80%",
               }}
             >
               <i aria-hidden="true" class=" address book icon"></i>
