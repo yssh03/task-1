@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 function Breadcrumb() {
   const location = useLocation();
   const { pathname } = location;
-  const path = pathname.split("/").filter((item) => item);
+  const path = pathname.split("/").filter((item) =>  item);
   const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   return (
     <>

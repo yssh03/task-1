@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../header/Header";
 import { Grid, Image } from "semantic-ui-react";
 import sale from "../../assets/sale.png";
@@ -7,6 +7,14 @@ import Breadcrumb from "../header/Breadcrumb";
 
 function Home() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, [navigate, token]);
+
   return (
     <>
       <Header />
@@ -19,7 +27,7 @@ function Home() {
           <Grid.Column width={9}>
             <div style={{ marginTop: "100px", marginLeft: "30px" }}>
               <p
-                class="ui header"
+                className="ui header"
                 style={{
                   fontSize: "50px",
                   textJustify: "inter-word",
@@ -30,7 +38,7 @@ function Home() {
               </p>
               <p style={{ fontSize: "30px" }}>Hurry up!!!</p>
               <button
-                class="ui secondary button"
+                className="ui secondary button"
                 style={{ marginTop: "20px", letterSpacing: "2px" }}
                 onClick={()=> navigate("/product")}
               >
@@ -40,7 +48,7 @@ function Home() {
           </Grid.Column>
         </Grid>
       </div> */}
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 content-center">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 content-center">
         <div className="m-5">
           <img className=" w-full h-full" src={sale} alt="IMAGE" />
         </div>
@@ -51,13 +59,13 @@ function Home() {
           </p>
           <p className="text-4xl font-medium">Hurry up!!!</p>
           <button
-            class="ui secondary button"
+            className="ui secondary button"
             style={{ marginTop: "20px", letterSpacing: "2px" }}
             onClick={() => navigate("/product")}
           >
             Explore....
           </button>
-        </div> 
+        </div>
       </div>
     </>
   );

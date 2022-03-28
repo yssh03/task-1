@@ -17,18 +17,28 @@ function Product() {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
 
+  const token = localStorage.getItem("token");
+  
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, [navigate, token]);
+
   useEffect(() => {
     setData(products);
   }, [products]);
+
   const fetchProduct = async () => {
     const response = await axiosInstance
-      .get("https://fakestoreapi.com/products")
+      .get("http://localhost:3001/products")
       .catch((error) => console.log("Error: ", error));
 
     await dispatch(setProduct(response.data));
     await setData(response.data);
     await setFlag(!flag);
   };
+
 
   useEffect(() => {
     fetchProduct();
@@ -59,7 +69,7 @@ function Product() {
       <Breadcrumb />
       {data && Object.keys(data).length === 0 ? (
         <div
-          class="ui active centered inline loader"
+          className="ui active centered inline loader"
           style={{ marginTop: "20px" }}
         ></div>
       ) : (
@@ -70,7 +80,7 @@ function Product() {
               justifyContent: "flex-end",
               marginTop: "20px",
               marginBottom: "10px",
-              marginRight:"10px",
+              marginRight: "10px",
               letterSpacing: "2px",
             }}
           >
@@ -112,7 +122,7 @@ function Product() {
                             {product.price}
                           </Card.Content>
                           <button
-                            class="ui secondary button"
+                            className="ui secondary button"
                             style={{ marginTop: "5px" }}
                             onClick={() =>
                               navigate(`/product/product-details`, {
@@ -131,7 +141,7 @@ function Product() {
           <div className="container mx-auto ">
             {" "}
             {/* <div className="grid grid-rows-1 grid-flow-col"> */}
-            <div class="grid  xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
+            <div className="grid  xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
               {data &&
                 data.length &&
                 data.map((product) => (
@@ -148,22 +158,29 @@ function Product() {
                       </p>
                       <p className="font-semibold my-2">
                         <i
-                          class="dollar sign icon"
+                          className="dollar sign icon"
                           style={{ fontWeight: "bold" }}
                         ></i>
                         {product.price}
                       </p>
-                      <button
-                        class="ui secondary button"
-                        style={{ marginTop: "10px", letterSpacing: "2px" }}
-                        onClick={() =>
-                          navigate(`/product/product-details`, {
-                            state: product.id,
-                          })
-                        }
-                      >
-                        Buy
-                      </button>
+                      <div>
+                        <button
+                          className="ui secondary button"
+                          style={{
+                            marginTop: "10px",
+                            letterSpacing: "2px",
+                            // display: "flex",
+                            // justifyContent: "end",
+                          }}
+                          onClick={() =>
+                            navigate(`/product/product-details`, {
+                              state: product.id,
+                            })
+                          }
+                        >
+                          Buy
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

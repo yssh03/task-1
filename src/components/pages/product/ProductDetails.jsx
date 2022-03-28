@@ -34,7 +34,7 @@ function ProductDetails() {
 
   const fetchProduct = async () => {
     const response = await axiosInstance
-      .get(`https://fakestoreapi.com/products/${state}`)
+      .get(`http://localhost:3001/products/${state}`)
       .catch((error) => console.log("Error : ", error));
 
     dispatch(selectedProduct(response.data));
@@ -47,10 +47,10 @@ function ProductDetails() {
         <Loader active inline="centered" />
       ) : (
         //  ( <div style={{ paddingLeft: "10  px", margin: "20px" }}>
-        //     <div class="ui grid">
-        //       <div class="three wide column">
+        //     <div className="ui grid">
+        //       <div className="three wide column">
         //         {/* // <Image src={image} /> */}
-        //         <img src={image} class="ui image"/>
+        //         <img src={image} className="ui image"/>
         //       </div>
         //       <Grid.Column width={3}>
         //         <Card>
@@ -80,7 +80,7 @@ function ProductDetails() {
         //     </div>
         //   </div>
         // )
-        <div class="grid lg:grid-cols-4 xl:grid-cols-4 md:grid-cols-2  sm:grid-cols-2 xs:grid-cols-2 gap-6 my-5 content-center">
+        <div className="grid lg:grid-cols-4 xl:grid-cols-4 md:grid-cols-2  sm:grid-cols-2 xs:grid-cols-2 gap-6 my-5 content-center">
           <div className="flex justify-end">
             <img src={image} alt={title} className="h-52" />
           </div>
@@ -89,14 +89,14 @@ function ProductDetails() {
               {product.title}
             </p>
             <p className="font-semibold my-2">
-              <i class="dollar sign icon" style={{ fontWeight: "bold" }}></i>
+              <i className="dollar sign icon" style={{ fontWeight: "bold" }}></i>
               {product.price}
             </p>
             <p className=" text-center font-semibold text-lg pt-1 pb-2">
               {category}
             </p>
             <p className="font-bold">
-              <i class="star icon"></i>
+              <i className="star icon"></i>
               {rating.rate}
             </p>
             <div className="mt-5">

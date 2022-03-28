@@ -43,13 +43,20 @@ function Header() {
               <Link to={"/product"}>Product</Link>
               <Link to={"/about"}>About Us</Link>
               <Link to={"/contact"}>Contact Us</Link>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                }}
+              >
+                <Link to={"/login"}>Logout</Link>
+              </button>
             </div>
             <button onClick={() => setShowLinks(!showLinks)}>
               <i aria-hidden="true" class="bars icon"></i>
             </button>
           </div>
           {showSearch && (
-            <div className="navbar-rightside" >
+            <div className="navbar-rightside">
               <form>
                 <input
                   type="text"
