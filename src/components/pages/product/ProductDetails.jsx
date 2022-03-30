@@ -92,9 +92,7 @@ function ProductDetails() {
           <div className="col-span-2 my-2 text-justify text-xl font-semibold   lg:pr-20 xs:pr-20 md:px-10 sm:px-10 xs:px-10 ">
             <p>{description}</p>
           </div>
-          {/* <div>04</div> */}
-
-          {/* <!-- ... --> */}
+        
         </div>
       )}
     </>

@@ -108,6 +108,28 @@ function Product() {
           </button>
         </div>
       </div>
+      <div className="flex justify-center">
+        <label class="inline-flex items-center m-3 ">
+          <input name="productCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" checked />
+          <span class="ml-2 text-gray-700 font-semibold ">All</span>
+        </label>
+        <label class="inline-flex items-center m-3">
+          <input name="productCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" />
+          <span class="ml-2 text-gray-700 font-semibold">Men's</span>
+        </label>
+        <label class="inline-flex items-center m-3">
+          <input name="productCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" />
+          <span class="ml-2 text-gray-700 font-semibold">Women's</span>
+        </label>
+        <label class="inline-flex items-center m-3">
+          <input name="productCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" />
+          <span class="ml-2 text-gray-700 font-semibold">Jewelry</span>
+        </label>
+        <label class="inline-flex items-center m-3">
+          <input name="productCheckbox" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" />
+          <span class="ml-2 text-gray-700 font-semibold">Electronics</span>
+        </label>
+      </div>
 
       {
         <div className="m-5">
