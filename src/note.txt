@@ -1,0 +1,116 @@
+HOME:
+{/* <div style={{ margin: "50px 10px" }}>
+        <Grid>
+          <Grid.Column width={6}>
+            <Image src={sale} />
+          </Grid.Column>
+          <Grid.Column width={9}>
+            <div style={{ marginTop: "100px", marginLeft: "30px" }}>
+              <p
+                className="ui header"
+                style={{
+                  fontSize: "50px",
+                  textJustify: "inter-word",
+                  verticalAlign: "middle",
+                }}
+              >
+                Want to full your wardrobe with this amazing products???
+              </p>
+              <p style={{ fontSize: "30px" }}>Hurry up!!!</p>
+              <button
+                className="ui secondary button"
+                style={{ marginTop: "20px", letterSpacing: "2px" }}
+                onClick={()=> navigate("/product")}
+              >
+                Explore....
+              </button>
+            </div>
+          </Grid.Column>
+        </Grid>
+      </div> */}
+
+ PRODUCT:
+  {/* <Grid columns={4} divided>
+              <Grid.Row>
+                {data &&
+                  data.length &&
+                  data.map((product) => (
+                    <Grid.Column
+                      style={{
+                        marginTop: "10px",
+                        marginLeft: "20px",
+                        marginRight: "-20px",
+                      }}
+                      key={product.id}
+                    >
+                      <Card>
+                        <Image
+                          src={product.image}
+                          fluid={true}
+                          size={"small"}
+                        />
+                        <Card.Content>
+                          <Card.Header>{product.title}</Card.Header>
+                          <Card.Content
+                            style={{
+                              color: "grey",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            <Icon name="dollar sign" />
+                            {product.price}
+                          </Card.Content>
+                          <button
+                            className="ui secondary button"
+                            style={{ marginTop: "5px" }}
+                            onClick={() =>
+                              navigate(`/product/product-details`, {
+                                state: product.id,
+                              })
+                            }
+                          >
+                            Buy
+                          </button>
+                        </Card.Content>
+                      </Card>
+                    </Grid.Column>
+                  ))}
+              </Grid.Row>
+            </Grid> */}     
+
+ productdetails:
+    //  ( <div style={{ paddingLeft: "10  px", margin: "20px" }}>
+        //     <div className="ui grid">
+        //       <div className="three wide column">
+        //         {/* // <Image src={image} /> */}
+        //         <img src={image} className="ui image"/>
+        //       </div>
+        //       <Grid.Column width={3}>
+        //         <Card>
+        //           <Card.Content header={title} />
+        //           <Card.Content description={category} />
+        //           <Card.Content extra>
+        //             <Icon name="dollar sign" />
+        //             {price}
+        //           </Card.Content>
+        //           <div>
+        //             <button
+        //               className="ui secondary basic button"
+        //               style={{ marginBottom: "2px" }}
+        //               onClick={() => navigate("/product")}
+        //             >
+        //               Back
+        //             </button>
+        //             <button className="ui secondary button">Add to Cart</button>
+        //           </div>
+        //         </Card>
+        //       </Grid.Column>
+        //       <Grid.Column width={8}>
+        //         <Card>
+        //           <Card.Content description={description} />
+        //         </Card>
+        //       </Grid.Column>
+        //     </div>
+        //   </div>
+        // )
+                

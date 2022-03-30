@@ -1,0 +1,16 @@
+BUGS:
+1. If user types blank space in search bar then it shows "no data found".
+2. Navbar can not tell on which page user is.
+3. if match not found then it shows "no data found"
+4. Navbar should not overlap contain of main page.
+5. Navbar responsive css is not working well.
+
+
+IMPROVEMENT:
+1. Make it more responsive as well as better css.
+2. Add "page not found" page.
+3. Add to Cart option can be added.
+4. In breadcrumb we can show product title.
+5. Logout button in header.
+6. Add Validation in LOGIN.
+7. Add category wise search

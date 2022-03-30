@@ -1,6 +1,5 @@
 import React from "react";
 import Headers from "../../header/Header";
-import { Grid, Image, Card, Icon } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -18,7 +17,7 @@ function Product() {
   const [flag, setFlag] = useState(false);
 
   const token = localStorage.getItem("token");
-  
+
   useEffect(() => {
     if (token === null) {
       navigate("/login");
@@ -39,25 +38,33 @@ function Product() {
     await setFlag(!flag);
   };
 
-
   useEffect(() => {
     fetchProduct();
   }, []);
 
-  const handleSort = (param) => {
-    console.log("clicked");
+  const handleSort = (param, order) => {
     const sortedData = param.sort((a, b) => {
       var titleA = a.title.toUpperCase();
       var titleB = b.title.toUpperCase();
-      if (titleA < titleB) {
-        return -1;
+
+      if (order === "dsc") {
+        if (titleA > titleB) {
+          return -1;
+        }
+        if (titleA < titleB) {
+          return 1;
+        }
+      } else {
+        if (titleA < titleB) {
+          return -1;
+        }
+        if (titleA > titleB) {
+          return 1;
+        }
       }
-      if (titleA > titleB) {
-        return 1;
-      }
+
       return 0;
     });
-
     dispatch(setProduct(sortedData));
     setData(sortedData);
     setFlag(!flag);
@@ -67,85 +74,49 @@ function Product() {
     <>
       <Headers />
       <Breadcrumb />
-      {data && Object.keys(data).length === 0 ? (
+      <div className="flex justify-end mr-5">
         <div
-          className="ui active centered inline loader"
-          style={{ marginTop: "20px" }}
-        ></div>
-      ) : (
-        <div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginTop: "20px",
-              marginBottom: "10px",
-              marginRight: "10px",
-              letterSpacing: "2px",
-            }}
+          style={{
+            marginTop: "20px",
+            marginBottom: "10px",
+            letterSpacing: "2px",
+          }}
+        >
+          <button
+            className="ui secondary button"
+            disabled={data.length === 0 ? true : false}
+            onClick={() => handleSort(data, "asc")}
           >
-            <button
-              className="ui secondary button"
-              onClick={() => handleSort(data)}
-            >
-              Sort
-            </button>
-          </div>
-          {/* <Grid columns={4} divided>
-              <Grid.Row>
-                {data &&
-                  data.length &&
-                  data.map((product) => (
-                    <Grid.Column
-                      style={{
-                        marginTop: "10px",
-                        marginLeft: "20px",
-                        marginRight: "-20px",
-                      }}
-                      key={product.id}
-                    >
-                      <Card>
-                        <Image
-                          src={product.image}
-                          fluid={true}
-                          size={"small"}
-                        />
-                        <Card.Content>
-                          <Card.Header>{product.title}</Card.Header>
-                          <Card.Content
-                            style={{
-                              color: "grey",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            <Icon name="dollar sign" />
-                            {product.price}
-                          </Card.Content>
-                          <button
-                            className="ui secondary button"
-                            style={{ marginTop: "5px" }}
-                            onClick={() =>
-                              navigate(`/product/product-details`, {
-                                state: product.id,
-                              })
-                            }
-                          >
-                            Buy
-                          </button>
-                        </Card.Content>
-                      </Card>
-                    </Grid.Column>
-                  ))}
-              </Grid.Row>
-            </Grid> */}
+            A-Z
+          </button>
+        </div>
+        <div
+          style={{
+            marginTop: "20px",
+            marginBottom: "10px",
+            // marginRight: "10px",
+            letterSpacing: "2px",
+          }}
+        >
+          <button
+            className="ui secondary button"
+            disabled={data.length === 0 ? true : false}
+            hidden={data.length === 0 ? true : false}
+            onClick={() => handleSort(data, "dsc")}
+          >
+            Z-A
+          </button>
+        </div>
+      </div>
+
+      {
+        <div className="m-5">
           <div className="container mx-auto ">
             {" "}
-            {/* <div className="grid grid-rows-1 grid-flow-col"> */}
-            <div className="grid  xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
-              {data &&
-                data.length &&
+            <div className="grid  xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
+              {data && data.length ? (
                 data.map((product) => (
-                  <div className="justify-center items-center border-2 border-gray-300 rounded-xl p-6 bg-black-100">
+                  <div className="justify-center bg-gray-300 xs:px-2 lg:mx-0 items-center border-2 border-gray-400 rounded-xl p-6 bg-black-100">
                     <img
                       src={product.image}
                       alt={product.title}
@@ -169,26 +140,30 @@ function Product() {
                           style={{
                             marginTop: "10px",
                             letterSpacing: "2px",
-                            // display: "flex",
-                            // justifyContent: "end",
                           }}
-                          onClick={() =>
-                            navigate(`/product/product-details`, {
-                              state: product.id,
-                            })
-                          }
+                          onClick={() => navigate(`/product/${product.id}`)}
                         >
                           Buy
                         </button>
                       </div>
                     </div>
                   </div>
-                ))}
+                ))
+              ) : (
+                <div className="flex col-span-5 justify-center text-xl font-bold mx-auto my-10">
+                  No Data Found!!!
+                </div>
+              )}
             </div>
-            {/* </div> */}
           </div>{" "}
         </div>
-      )}
+      }
+      {/* )} */}
+      {/* {noDataFlag && (
+         <div className="flex justify-center text-xl font-bold mx-auto my-10">
+           No Data Found!!!
+         </div>
+       )} */}
     </>
   );
 }

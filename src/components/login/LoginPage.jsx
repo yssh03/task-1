@@ -65,6 +65,7 @@ const LoginPage = () => {
             <Segment stacked style={{ borderColor: "rgb(201 202 203)" }}>
               <Form.Input
                 fluid
+                required
                 name="empNo"
                 value={state.empNo}
                 onChange={handleChange}

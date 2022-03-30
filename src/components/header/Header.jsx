@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { searchProduct, setProduct } from "../../redux/actions/productAction";
 import "./Header.css";
 
@@ -35,21 +35,29 @@ function Header() {
       <div>
         <div className="navbar">
           <div className="navbar-logo">
-            <p>LOGO</p>
+            {" "}
+            <NavLink to={"/home"}>DUKAN</NavLink>
           </div>
           <div className="navbar-leftside">
             <div className="links" id={showLinks ? "hidden" : ""}>
-              <Link to={"/home"}>Home</Link>
-              <Link to={"/product"}>Product</Link>
-              <Link to={"/about"}>About Us</Link>
-              <Link to={"/contact"}>Contact Us</Link>
-              <button
+              <NavLink activeClassName="active" to={"/product"}>
+                Product
+              </NavLink>
+              <NavLink activeClassName="active" to={"/about"}>
+                About Us
+              </NavLink>
+              <NavLink activeClassName="active" to={"/contact"}>
+                Contact Us
+              </NavLink>
+
+              <NavLink
+                to={"/login"}
                 onClick={() => {
                   localStorage.removeItem("token");
                 }}
               >
-                <Link to={"/login"}>Logout</Link>
-              </button>
+                Logout
+              </NavLink>
             </div>
             <button onClick={() => setShowLinks(!showLinks)}>
               <i aria-hidden="true" class="bars icon"></i>

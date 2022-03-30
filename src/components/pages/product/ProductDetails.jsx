@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Card, Grid, Image, Icon, Loader } from "semantic-ui-react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   removeSelectedProduct,
   selectedProduct,
@@ -17,7 +16,6 @@ function ProductDetails() {
   const { title, description, price, category, image, rating } = product;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { state } = useLocation();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -26,7 +24,7 @@ function ProductDetails() {
     }
   }, [navigate, token]);
   useEffect(() => {
-    state && fetchProduct();
+    productID && productID !== "" && fetchProduct();
     return () => {
       dispatch(removeSelectedProduct());
     };
@@ -34,7 +32,7 @@ function ProductDetails() {
 
   const fetchProduct = async () => {
     const response = await axiosInstance
-      .get(`http://localhost:3001/products/${state}`)
+      .get(`http://localhost:3001/products/${productID}`)
       .catch((error) => console.log("Error : ", error));
 
     dispatch(selectedProduct(response.data));
@@ -44,42 +42,19 @@ function ProductDetails() {
       <Headers />
       <Breadcrumb />
       {Object.keys(product).length === 0 ? (
-        <Loader active inline="centered" />
+        <div>
+          {" "}
+          <div className="flex justify-center text-xl font-bold mx-10 my-10">
+            No Data Found!!!
+          </div>
+          <div
+            className="ui secondary button"
+            onClick={() => navigate("/product")}
+          >
+            Go to Products
+          </div>
+        </div>
       ) : (
-        //  ( <div style={{ paddingLeft: "10  px", margin: "20px" }}>
-        //     <div className="ui grid">
-        //       <div className="three wide column">
-        //         {/* // <Image src={image} /> */}
-        //         <img src={image} className="ui image"/>
-        //       </div>
-        //       <Grid.Column width={3}>
-        //         <Card>
-        //           <Card.Content header={title} />
-        //           <Card.Content description={category} />
-        //           <Card.Content extra>
-        //             <Icon name="dollar sign" />
-        //             {price}
-        //           </Card.Content>
-        //           <div>
-        //             <button
-        //               className="ui secondary basic button"
-        //               style={{ marginBottom: "2px" }}
-        //               onClick={() => navigate("/product")}
-        //             >
-        //               Back
-        //             </button>
-        //             <button className="ui secondary button">Add to Cart</button>
-        //           </div>
-        //         </Card>
-        //       </Grid.Column>
-        //       <Grid.Column width={8}>
-        //         <Card>
-        //           <Card.Content description={description} />
-        //         </Card>
-        //       </Grid.Column>
-        //     </div>
-        //   </div>
-        // )
         <div className="grid lg:grid-cols-4 xl:grid-cols-4 md:grid-cols-2  sm:grid-cols-2 xs:grid-cols-2 gap-6 my-5 content-center">
           <div className="flex justify-end">
             <img src={image} alt={title} className="h-52" />
@@ -89,7 +64,10 @@ function ProductDetails() {
               {product.title}
             </p>
             <p className="font-semibold my-2">
-              <i className="dollar sign icon" style={{ fontWeight: "bold" }}></i>
+              <i
+                className="dollar sign icon"
+                style={{ fontWeight: "bold" }}
+              ></i>
               {product.price}
             </p>
             <p className=" text-center font-semibold text-lg pt-1 pb-2">

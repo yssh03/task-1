@@ -2,7 +2,7 @@ import { ActionTypes } from "../constant/constants";
 
 const initialState = {
   products: [],
-  filteredProducts : []
+  filteredProducts: [],
 };
 
 // const cart = [];
@@ -10,11 +10,15 @@ const initialState = {
 export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_PRODUCTS:
-      return { ...state, products: action.payload, filteredProducts : action.payload };
+      return {
+        ...state,
+        products: action.payload,
+        filteredProducts: action.payload,
+      };
 
-    case ActionTypes.SEARCH_PRODUCTS:      
-      return {...state, filteredProducts :action.payload.products};
-      
+    case ActionTypes.SEARCH_PRODUCTS:
+      return { ...state, filteredProducts: action.payload.products };
+
     default:
       return state;
   }
