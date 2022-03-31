@@ -1,6 +1,5 @@
 import React from "react";
 import Headers from "../../header/Header";
-import { Grid, Image, Card, Icon } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -16,165 +15,214 @@ function Product() {
 
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  console.log("data ", data);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, [navigate, token]);
 
   useEffect(() => {
     setData(products);
-
   }, [products]);
 
-
   const fetchProduct = async () => {
-    const response = await axiosInstance
-      .get("https://fakestoreapi.com/products")
+    await axiosInstance
+      .get("http://localhost:3001/products")
+      .then((response) => {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+
+        dispatch(setProduct(response.data));
+        setData(response.data);
+        setFlag(!flag);
+      })
       .catch((error) => console.log("Error: ", error));
 
-    await dispatch(setProduct(response.data));
-    await setData(response.data);
-    await setFlag(!flag);
+    // await dispatch(setProduct(response.data));
+    // await setData(response.data);
+    // await setFlag(!flag);
   };
 
   useEffect(() => {
     fetchProduct();
   }, []);
 
-  const handleSort = (param) => {
-    console.log("clicked");
+  const handleSort = (param, order) => {
     const sortedData = param.sort((a, b) => {
       var titleA = a.title.toUpperCase();
       var titleB = b.title.toUpperCase();
-      if (titleA < titleB) {
-        return -1;
+
+      if (order === "dsc") {
+        if (titleA > titleB) {
+          return -1;
+        }
+        if (titleA < titleB) {
+          return 1;
+        }
+      } else {
+        if (titleA < titleB) {
+          return -1;
+        }
+        if (titleA > titleB) {
+          return 1;
+        }
       }
-      if (titleA > titleB) {
-        return 1;
-      }
+
       return 0;
     });
-
     dispatch(setProduct(sortedData));
     setData(sortedData);
     setFlag(!flag);
   };
 
+  console.log(isLoading);
   return (
     <>
       <Headers />
       <Breadcrumb />
-      {data && Object.keys(data).length === 0 ? (
-        <div
-          class="ui active centered inline loader"
-          style={{ marginTop: "20px" }}
-        ></div>
+      {/* {true && (
+        <div className="flex">
+          <div class="ui loader"></div>
+        </div>
+      )} */}
+      {isLoading ?(
+        <div className="flex">
+          <div class="ui loader"></div>
+        </div>
       ) : (
         <div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginTop: "20px",
-              marginBottom: "10px",
-              marginRight:"10px",
-              letterSpacing: "2px",
-            }}
-          >
-            <button
-              className="ui secondary button"
-              onClick={() => handleSort(data)}
+          {" "}
+          <div className="flex justify-end mr-5">
+            <div
+              style={{
+                marginTop: "20px",
+                marginBottom: "10px",
+                letterSpacing: "2px",
+              }}
             >
-              Sort
-            </button>
-          </div>
-          {/* <Grid columns={4} divided>
-              <Grid.Row>
-                {data &&
-                  data.length &&
-                  data.map((product) => (
-                    <Grid.Column
-                      style={{
-                        marginTop: "10px",
-                        marginLeft: "20px",
-                        marginRight: "-20px",
-                      }}
-                      key={product.id}
-                    >
-                      <Card>
-                        <Image
-                          src={product.image}
-                          fluid={true}
-                          size={"small"}
-                        />
-                        <Card.Content>
-                          <Card.Header>{product.title}</Card.Header>
-                          <Card.Content
-                            style={{
-                              color: "grey",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            <Icon name="dollar sign" />
-                            {product.price}
-                          </Card.Content>
-                          <button
-                            class="ui secondary button"
-                            style={{ marginTop: "5px" }}
-                            onClick={() =>
-                              navigate(`/product/product-details`, {
-                                state: product.id,
-                              })
-                            }
-                          >
-                            Buy
-                          </button>
-                        </Card.Content>
-                      </Card>
-                    </Grid.Column>
-                  ))}
-              </Grid.Row>
-            </Grid> */}
-          <div className="container mx-auto ">
-            {" "}
-            {/* <div className="grid grid-rows-1 grid-flow-col"> */}
-            <div class="grid  xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
-              {data &&
-                data.length &&
-                data.map((product) => (
-                  <div className="justify-center items-center border-2 border-gray-300 rounded-xl p-6 bg-black-100">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="h-52 mb-2"
-                    />
-                    <div>
-                      {" "}
-                      <p className="  text-justify font-bold text-2xl pt-2 pb-2 ">
-                        {product.title}
-                      </p>
-                      <p className="font-semibold my-2">
-                        <i
-                          class="dollar sign icon"
-                          style={{ fontWeight: "bold" }}
-                        ></i>
-                        {product.price}
-                      </p>
-                      <button
-                        class="ui secondary button"
-                        style={{ marginTop: "10px", letterSpacing: "2px" }}
-                        onClick={() =>
-                          navigate(`/product/product-details`, {
-                            state: product.id,
-                          })
-                        }
-                      >
-                        Buy
-                      </button>
-                    </div>
-                  </div>
-                ))}
+              <button
+                className="ui secondary button"
+                disabled={data.length === 0 ? true : false}
+                onClick={() => handleSort(data, "asc")}
+              >
+                A-Z
+              </button>
             </div>
-            {/* </div> */}
-          </div>{" "}
+            <div
+              style={{
+                marginTop: "20px",
+                marginBottom: "10px",
+                // marginRight: "10px",
+                letterSpacing: "2px",
+              }}
+            >
+              <button
+                className="ui secondary button"
+                disabled={data.length === 0 ? true : false}
+                hidden={data.length === 0 ? true : false}
+                onClick={() => handleSort(data, "dsc")}
+              >
+                Z-A
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <label class="inline-flex items-center m-3 ">
+              <input
+                name="productCheckbox"
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-gray-600"
+                checked
+              />
+              <span class="ml-2 text-gray-700 font-semibold ">All</span>
+            </label>
+            <label class="inline-flex items-center m-3">
+              <input
+                name="productCheckbox"
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-gray-600"
+              />
+              <span class="ml-2 text-gray-700 font-semibold">Men's</span>
+            </label>
+            <label class="inline-flex items-center m-3">
+              <input
+                name="productCheckbox"
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-gray-600"
+              />
+              <span class="ml-2 text-gray-700 font-semibold">Women's</span>
+            </label>
+            <label class="inline-flex items-center m-3">
+              <input
+                name="productCheckbox"
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-gray-600"
+              />
+              <span class="ml-2 text-gray-700 font-semibold">Jewelry</span>
+            </label>
+            <label class="inline-flex items-center m-3">
+              <input
+                name="productCheckbox"
+                type="checkbox"
+                class="form-checkbox h-5 w-5 text-gray-600"
+              />
+              <span class="ml-2 text-gray-700 font-semibold">Electronics</span>
+            </label>
+          </div>
+          {
+            <div className="m-5">
+              <div className="container mx-auto ">
+                {" "}
+                <div className="grid  xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
+                  {data && data.length ? (
+                    data.map((product) => (
+                      <div className="justify-center bg-gray-300 xs:px-2 lg:mx-0 items-center border-2 border-gray-400 rounded-xl p-6">
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="h-52 mb-2 ml-12"
+                        />
+                        <div>
+                          {" "}
+                          <p className="  text-justify font-bold text-2xl pt-2 pb-2 ">
+                            {product.title}
+                          </p>
+                          <p className="font-semibold my-2">
+                            <i
+                              className="dollar sign icon"
+                              style={{ fontWeight: "bold" }}
+                            ></i>
+                            {product.price}
+                          </p>
+                          <div>
+                            <button
+                              className="ui secondary button"
+                              style={{
+                                marginTop: "10px",
+                                letterSpacing: "2px",
+                              }}
+                              onClick={() => navigate(`/product/${product.id}`)}
+                            >
+                              Buy
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex col-span-5 justify-center text-xl font-bold mx-auto my-10">
+                      No Data Found!!!
+                    </div>
+                  )}
+                </div>
+              </div>{" "}
+            </div>
+          }
         </div>
       )}
     </>

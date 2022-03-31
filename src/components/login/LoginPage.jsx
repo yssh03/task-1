@@ -65,6 +65,7 @@ const LoginPage = () => {
             <Segment stacked style={{ borderColor: "rgb(201 202 203)" }}>
               <Form.Input
                 fluid
+                required
                 name="empNo"
                 value={state.empNo}
                 onChange={handleChange}
@@ -84,7 +85,7 @@ const LoginPage = () => {
                 type="password"
               />
 
-              <Button color="black" fluid size="large" onClick={handleSubmit}>
+              <Button color="black" fluid size="large" type="submit" onClick={handleSubmit}>
                 Login
               </Button>
             </Segment>
@@ -94,11 +95,7 @@ const LoginPage = () => {
           </Message>
         </Grid.Column>
       </Grid>
-      {/* 
-  <div>
-    <Button primary>Primary</Button>
-    <Button secondary>Secondary</Button>
-  </div> */}
+
     </>
   );
 };

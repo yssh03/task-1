@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../header/Breadcrumb";
 import Header from "../header/Header";
 
 function AboutUs() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, [navigate, token]);
+
   return (
     <>
       <Header />

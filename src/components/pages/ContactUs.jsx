@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../header/Breadcrumb";
 import Header from "../header/Header";
 
 function ContactUs() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, [navigate, token]);
+
   return (
     <>
       <Header />
       <Breadcrumb />
-      <div>
+      <div style={{marginTop: "30px"}}>
         <p
           style={{
             display: "inline-block",
@@ -34,14 +44,14 @@ function ContactUs() {
             }}
           >
             <div
-              class="ui icon message"
+              className="ui icon message"
               style={{
                 width: "80%",
               }}
             >
-              <i aria-hidden="true" class="linkedin icon"></i>
-              <div class="content">
-                <div class="header" style={{ width: "50%" }}>
+              <i aria-hidden="true" className="linkedin icon"></i>
+              <div className="content">
+                <div className="header" style={{ width: "50%" }}>
                   <a href="https://www.linkedin.com/in/yash-patel-a15a75221">
                     https://www.linkedin.com/in/yash-patel-a15a75221
                   </a>
@@ -50,38 +60,38 @@ function ContactUs() {
             </div>
 
             <div
-              class="ui icon message"
+              className="ui icon message"
               style={{
                 width: "80%",
               }}
             >
-              <i aria-hidden="true" class="phone square icon"></i>
-              <div class="content">
-                <div class="header">+91 9586580504</div>
+              <i aria-hidden="true" className="phone square icon"></i>
+              <div className="content">
+                <div className="header">+91 9586580504</div>
               </div>
             </div>
 
             <div
-              class="ui icon message"
+              className="ui icon message"
               style={{
                 width: "80%",
               }}
             >
-              <i aria-hidden="true" class="at icon"></i>
-              <div class="content">
-                <div class="header">yash.patel@drcsystems.in</div>
+              <i aria-hidden="true" className="at icon"></i>
+              <div className="content">
+                <div className="header">yash.patel@drcsystems.in</div>
               </div>
             </div>
 
             <div
-              class="ui icon message"
+              className="ui icon message"
               style={{
                 width: "80%",
               }}
             >
-              <i aria-hidden="true" class=" address book icon"></i>
-              <div class="content">
-                <div class="header">Gift city, Gandhinagar</div>
+              <i aria-hidden="true" className=" address book icon"></i>
+              <div className="content">
+                <div className="header">Gift city, Gandhinagar</div>
               </div>
             </div>
           </div>
