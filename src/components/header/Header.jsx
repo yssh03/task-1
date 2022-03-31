@@ -11,6 +11,7 @@ function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const products = useSelector((state) => state.allProducts.products);
+  console.log("products", products);
   const dispatch = useDispatch();
   const location = useLocation();
 

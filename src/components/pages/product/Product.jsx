@@ -17,9 +17,14 @@ function Product() {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
 
+  console.log("data ", data);
+
   useEffect(() => {
     setData(products);
+
   }, [products]);
+
+
   const fetchProduct = async () => {
     const response = await axiosInstance
       .get("https://fakestoreapi.com/products")
