@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import Header from "../header/Header";
-import sale from "../../assets/sale.png";
+import Header from "../../header/Header";
+import sale from "../../../assets/sale.png";
 import { useNavigate } from "react-router-dom";
-import Breadcrumb from "../header/Breadcrumb";
+import Breadcrumb from "../../header/Breadcrumb";
 
 function Home() {
   const navigate = useNavigate();

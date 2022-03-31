@@ -5,17 +5,33 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosUtils";
 import { useDispatch } from "react-redux";
-import { setProduct } from "../../../redux/actions/productAction";
+import {
+  filterByCategory,
+  setProduct,
+} from "../../../redux/actions/productAction";
 import Breadcrumb from "../../header/Breadcrumb";
 
+const initialStateCheckBox = {
+  allProducts: true,
+  jewelryProducts: false,
+  menProducts: false,
+  womenProducts: false,
+  electronicProducts: false,
+};
 function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.allProducts.filteredProducts);
+  const filterByCategoryProducts = useSelector(
+    (state) => state.allProducts.filteredProducts
+  );
 
+  console.log(filterByCategoryProducts);
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [check, setCheck] = useState(initialStateCheckBox);
+  const [filter, setFilter] = useState([]);
 
   const token = localStorage.getItem("token");
 
@@ -28,6 +44,10 @@ function Product() {
   useEffect(() => {
     setData(products);
   }, [products]);
+
+  useEffect(() => {
+    setData(filterByCategoryProducts);
+  }, [filterByCategoryProducts]);
 
   const fetchProduct = async () => {
     await axiosInstance
@@ -51,6 +71,10 @@ function Product() {
   useEffect(() => {
     fetchProduct();
   }, []);
+
+  useEffect(() => {
+    setData(filter);
+  }, [filter]);
 
   const handleSort = (param, order) => {
     const sortedData = param.sort((a, b) => {
@@ -80,19 +104,29 @@ function Product() {
     setFlag(!flag);
   };
 
-  console.log(isLoading);
+  const handleCheck = (e) => {
+    setCheck({
+      ...check,
+      [e.target.name]: e.target.checked,
+    });
+  };
+
+  const handleFilter = (args) => {
+    dispatch(filterByCategory(args, data));
+    // const filteredProduct = data.filter((x) => x.category === args);
+    // setFilter(filteredProduct);
+    // dispatch(setProduct(filter));
+  };
+  console.log("filter", filter);
+
   return (
     <>
       <Headers />
       <Breadcrumb />
-      {/* {true && (
-        <div className="flex">
-          <div class="ui loader"></div>
-        </div>
-      )} */}
-      {isLoading ?(
-        <div className="flex">
-          <div class="ui loader"></div>
+
+      {isLoading ? (
+        <div className="flex justify-center text-xl font-bold my-10">
+          Loading...
         </div>
       ) : (
         <div>
@@ -124,7 +158,6 @@ function Product() {
               <button
                 className="ui secondary button"
                 disabled={data.length === 0 ? true : false}
-                hidden={data.length === 0 ? true : false}
                 onClick={() => handleSort(data, "dsc")}
               >
                 Z-A
@@ -134,42 +167,66 @@ function Product() {
           <div className="flex justify-center">
             <label class="inline-flex items-center m-3 ">
               <input
-                name="productCheckbox"
+                name="allProducts"
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-gray-600"
-                checked
+                checked={check.allProducts}
+                onChange={(e) => {
+                  handleCheck(e);
+                  setFilter(data);
+                }}
               />
               <span class="ml-2 text-gray-700 font-semibold ">All</span>
             </label>
             <label class="inline-flex items-center m-3">
               <input
-                name="productCheckbox"
+                name="menProducts"
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-gray-600"
+                onChange={(e) => {
+                  handleCheck(e);
+                  handleFilter("men's clothing");
+                }}
+                checked={check.menProducts}
               />
               <span class="ml-2 text-gray-700 font-semibold">Men's</span>
             </label>
             <label class="inline-flex items-center m-3">
               <input
-                name="productCheckbox"
+                name="womenProducts"
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-gray-600"
+                checked={check.womenProducts}
+                onChange={(e) => {
+                  handleCheck(e);
+                  handleFilter("women's clothing");
+                }}
               />
               <span class="ml-2 text-gray-700 font-semibold">Women's</span>
             </label>
             <label class="inline-flex items-center m-3">
               <input
-                name="productCheckbox"
+                name="jewelryProducts"
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-gray-600"
+                checked={check.jewelryProducts}
+                onChange={(e) => {
+                  handleCheck(e);
+                  handleFilter("jewelery");
+                }}
               />
               <span class="ml-2 text-gray-700 font-semibold">Jewelry</span>
             </label>
             <label class="inline-flex items-center m-3">
               <input
-                name="productCheckbox"
+                name="electronicProducts"
                 type="checkbox"
                 class="form-checkbox h-5 w-5 text-gray-600"
+                checked={check.electronicProducts}
+                onChange={(e) => {
+                  handleCheck(e);
+                  handleFilter("electronics");
+                }}
               />
               <span class="ml-2 text-gray-700 font-semibold">Electronics</span>
             </label>
@@ -185,7 +242,7 @@ function Product() {
                         <img
                           src={product.image}
                           alt={product.title}
-                          className="h-52 mb-2 ml-12"
+                          className="h-52 mb-2"
                         />
                         <div>
                           {" "}

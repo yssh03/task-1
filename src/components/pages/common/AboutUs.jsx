@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Breadcrumb from "../header/Breadcrumb";
-import Header from "../header/Header";
+import Breadcrumb from "../../header/Breadcrumb";
+import Header from "../../header/Header";
 
 function AboutUs() {
   const navigate = useNavigate();

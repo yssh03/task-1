@@ -28,11 +28,42 @@ export const searchProduct = (searchData, data) => {
         searchData === ""
           ? data
           : data.filter((item) =>
-              item?.title?.toLowerCase().includes(searchData.trimStart().toLowerCase())
+              item?.title
+                ?.toLowerCase()
+                .includes(searchData.trimStart().toLowerCase())
             ),
     },
   };
 };
+
+export const filterByCategory = (filterData, data) => {
+  const tempArr = [];
+  
+    let filteredDatas =
+      filterData === ""
+        ? data
+        : data.filter(
+            (item) => item?.category?.toLowerCase() === filterData.toLowerCase()
+          );
+    console.log(filterData);
+    tempArr.push(...tempArr ,filteredDatas);
+  
+  console.log(tempArr);
+
+  return {
+    type: ActionTypes.FILTER_BY_CATEGORY,
+    payload: {
+      products:
+        filterData === ""
+          ? data
+          : data.filter(
+              (item) =>
+                item?.category?.toLowerCase() === filterData.toLowerCase()
+            ),
+    },
+  };
+};
+
 // export const addCart = (products) =>{
 //     return {
 //         type : ActionTypes.ADD_CART,

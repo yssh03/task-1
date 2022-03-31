@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Error from "../../assets/6368620.jpg";
+import Error from "../../../assets/6368620.jpg";
 
 function Error404() {
   const navigate = useNavigate()
