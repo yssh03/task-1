@@ -10,24 +10,46 @@ function Header() {
   const [showLinks, setShowLinks] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [data, setData] = useState([]);
+
   const products = useSelector((state) => state.allProducts.products);
+  const filterByCategoryProducts = useSelector(
+    (state) => state.allProducts.filteredProductsByCategory
+  );
+  const cartProduct = useSelector((state) => state.handleCart);
+
+  console.log("filterByCategoryProducts ", filterByCategoryProducts);
+  const temp = filterByCategoryProducts.map((item) => item.category);
+  const tempArr = temp.filter((q, index) => temp.indexOf(q) === index);
+
+  // console.log("filterByCategoryProducts IN HEADER", tempArr);
+  console.log(tempArr);
+  console.log(
+    "hyyyyy",
+    products.filter((x) => 
+    x.category.includes(tempArr))
+  );
+
+  useEffect(() => {
+    setData(filterByCategoryProducts);
+  }, [filterByCategoryProducts]);
+
   const dispatch = useDispatch();
   const location = useLocation();
 
   useEffect(() => {
-    location.pathname === "/product" ||
-    location.pathname === "/product/product-details"
+    location.pathname === "/product" || location.pathname === "/product/cart"
       ? setShowSearch(true)
       : setShowSearch(false);
   }, [location.pathname]);
 
   useEffect(() => {
-    searchValue === "" && dispatch(setProduct(products));
+    searchValue === "" && dispatch(setProduct(tempArr, products));
   }, [searchValue]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(searchProduct(searchValue, products));
+    dispatch(searchProduct(searchValue, tempArr, products));
   };
 
   return (
@@ -49,7 +71,9 @@ function Header() {
               <NavLink activeClassName="active" to={"/contact"}>
                 Contact Us
               </NavLink>
-
+              <NavLink exact to="/product/cart">
+                Cart ({cartProduct.length})
+              </NavLink>
               <NavLink
                 to={"/login"}
                 onClick={() => {
@@ -71,8 +95,8 @@ function Header() {
                   placeholder="Search..."
                   value={searchValue}
                   onChange={(e) => {
+                    handleSearch(e);
                     setSearchValue(e.target.value);
-                    dispatch(searchProduct(searchValue, products));
                   }}
                 />
                 <button type="submit" onClick={handleSearch}>

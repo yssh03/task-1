@@ -10,6 +10,7 @@ import {
   setProduct,
 } from "../../../redux/actions/productAction";
 import Breadcrumb from "../../header/Breadcrumb";
+import { logDOM } from "@testing-library/react";
 
 const initialStateCheckBox = {
   allProducts: true,
@@ -18,20 +19,66 @@ const initialStateCheckBox = {
   womenProducts: false,
   electronicProducts: false,
 };
+
+const categories = [
+  { id: 1, name: "men's clothing" },
+  { id: 2, name: "women's clothing" },
+  { id: 3, name: "jewelery" },
+  { id: 4, name: "electronics" },
+  { id: 5, name: "all" },
+];
+
 function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.allProducts.filteredProducts);
   const filterByCategoryProducts = useSelector(
-    (state) => state.allProducts.filteredProducts
+    (state) => state.allProducts.filteredProductsByCategory
   );
 
-  console.log(filterByCategoryProducts);
+  console.log("filterByCategoryProducts", filterByCategoryProducts);
+
+  const tempArr = [
+    "men's clothing",
+    "jewelery",
+    "electronics",
+    "women's clothing",
+  ];
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [check, setCheck] = useState(initialStateCheckBox);
-  const [filter, setFilter] = useState([]);
+  const [state, setState] = useState([
+    {
+      id: 1,
+      name: "Men's",
+      value: "men's clothing",
+      checked: false,
+    },
+    {
+      id: 2,
+      name: "Women's",
+      value: "women's clothing",
+      checked: false,
+    },
+    {
+      id: 3,
+      name: "Jewelery",
+      checked: false,
+      value: "jewelery",
+    },
+    {
+      id: 4,
+      name: "Electronics",
+      checked: false,
+      value: "electronics",
+    },
+    {
+      id: 5,
+      name: "All",
+      checked: true,
+      value: "ALL",
+    },
+  ]);
 
   const token = localStorage.getItem("token");
 
@@ -57,24 +104,56 @@ function Product() {
           setIsLoading(false);
         }, 1000);
 
-        dispatch(setProduct(response.data));
+        dispatch(setProduct(tempArr, response.data));
         setData(response.data);
         setFlag(!flag);
       })
       .catch((error) => console.log("Error: ", error));
-
-    // await dispatch(setProduct(response.data));
-    // await setData(response.data);
-    // await setFlag(!flag);
   };
 
   useEffect(() => {
     fetchProduct();
   }, []);
 
-  useEffect(() => {
-    setData(filter);
-  }, [filter]);
+  const onFilterChange2 = (e, id) => {
+    let tempArr = [...state];
+    tempArr[id].checked = !tempArr[id].checked;
+    setState(tempArr);
+
+    if (tempArr[id].name === "All" && tempArr[id].checked === true) {
+      const newArr = state.map((item) => item.value);
+
+      let newArr2 = tempArr.map((item) => {
+        if (item.name !== "All")
+          return {
+            ...item,
+            checked: false,
+          };
+
+        return item;
+      });
+
+      setState(newArr2);
+      dispatch(filterByCategory(newArr, products));
+    } else {
+      const newArr = state
+        .filter((item) => item.checked === true)
+        .map((item) => item.value);
+
+      let newArr2 = tempArr.map((item) => {
+        if (item.name === "All")
+          return {
+            ...item,
+            checked: false,
+          };
+
+        return item;
+      });
+      setState(newArr2);
+
+      dispatch(filterByCategory(newArr, products));
+    }
+  };
 
   const handleSort = (param, order) => {
     const sortedData = param.sort((a, b) => {
@@ -104,28 +183,13 @@ function Product() {
     setFlag(!flag);
   };
 
-  const handleCheck = (e) => {
-    setCheck({
-      ...check,
-      [e.target.name]: e.target.checked,
-    });
-  };
-
-  const handleFilter = (args) => {
-    dispatch(filterByCategory(args, data));
-    // const filteredProduct = data.filter((x) => x.category === args);
-    // setFilter(filteredProduct);
-    // dispatch(setProduct(filter));
-  };
-  console.log("filter", filter);
-
   return (
     <>
       <Headers />
       <Breadcrumb />
 
       {isLoading ? (
-        <div className="flex justify-center text-xl font-bold my-10">
+        <div className="flex justify-center text-xl font-bold my-10 tracking-widest">
           Loading...
         </div>
       ) : (
@@ -164,72 +228,24 @@ function Product() {
               </button>
             </div>
           </div>
-          <div className="flex justify-center">
-            <label class="inline-flex items-center m-3 ">
-              <input
-                name="allProducts"
-                type="checkbox"
-                class="form-checkbox h-5 w-5 text-gray-600"
-                checked={check.allProducts}
-                onChange={(e) => {
-                  handleCheck(e);
-                  setFilter(data);
-                }}
-              />
-              <span class="ml-2 text-gray-700 font-semibold ">All</span>
-            </label>
-            <label class="inline-flex items-center m-3">
-              <input
-                name="menProducts"
-                type="checkbox"
-                class="form-checkbox h-5 w-5 text-gray-600"
-                onChange={(e) => {
-                  handleCheck(e);
-                  handleFilter("men's clothing");
-                }}
-                checked={check.menProducts}
-              />
-              <span class="ml-2 text-gray-700 font-semibold">Men's</span>
-            </label>
-            <label class="inline-flex items-center m-3">
-              <input
-                name="womenProducts"
-                type="checkbox"
-                class="form-checkbox h-5 w-5 text-gray-600"
-                checked={check.womenProducts}
-                onChange={(e) => {
-                  handleCheck(e);
-                  handleFilter("women's clothing");
-                }}
-              />
-              <span class="ml-2 text-gray-700 font-semibold">Women's</span>
-            </label>
-            <label class="inline-flex items-center m-3">
-              <input
-                name="jewelryProducts"
-                type="checkbox"
-                class="form-checkbox h-5 w-5 text-gray-600"
-                checked={check.jewelryProducts}
-                onChange={(e) => {
-                  handleCheck(e);
-                  handleFilter("jewelery");
-                }}
-              />
-              <span class="ml-2 text-gray-700 font-semibold">Jewelry</span>
-            </label>
-            <label class="inline-flex items-center m-3">
-              <input
-                name="electronicProducts"
-                type="checkbox"
-                class="form-checkbox h-5 w-5 text-gray-600"
-                checked={check.electronicProducts}
-                onChange={(e) => {
-                  handleCheck(e);
-                  handleFilter("electronics");
-                }}
-              />
-              <span class="ml-2 text-gray-700 font-semibold">Electronics</span>
-            </label>
+          <div className="flex justify-center ">
+            {state.map((item, index) => (
+              <label class="inline-flex items-center m-3 cursor-pointer ">
+                <input
+                  id={item.id}
+                  name={item.name}
+                  value={item.value}
+                  type="checkbox"
+                  class="form-checkbox h-5 w-5 text-gray-600 cursor-pointer"
+                  // checked={check.allProducts}
+                  onChange={(e) => onFilterChange2(e, index)}
+                  checked={item.checked}
+                />
+                <span class="ml-2 text-gray-700 font-semibold ">
+                  {item.name}
+                </span>
+              </label>
+            ))}
           </div>
           {
             <div className="m-5">

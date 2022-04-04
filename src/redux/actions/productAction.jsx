@@ -1,6 +1,8 @@
 import { ActionTypes } from "../constant/constants";
 
-export const setProduct = (products) => {
+export const setProduct = (arr, products) => {
+  const filteredData = products.filter((x) => x.category === arr)
+  console.log(filteredData);
   return {
     type: ActionTypes.SET_PRODUCTS,
     payload: products,
@@ -20,14 +22,19 @@ export const removeSelectedProduct = () => {
   };
 };
 
-export const searchProduct = (searchData, data) => {
+export const searchProduct = (searchData, filterData, data) => {
+  console.log("data ",filterData);
+  console.log("data from header",data);
+
+ const filteredData =  data.filter((item) => filterData.includes(item.category))
+ console.log("filtered Data ",filteredData );
   return {
     type: ActionTypes.SEARCH_PRODUCTS,
     payload: {
       products:
         searchData === ""
-          ? data
-          : data.filter((item) =>
+          ? filteredData
+          : filteredData.filter((item) =>
               item?.title
                 ?.toLowerCase()
                 .includes(searchData.trimStart().toLowerCase())
@@ -37,43 +44,24 @@ export const searchProduct = (searchData, data) => {
 };
 
 export const filterByCategory = (filterData, data) => {
-  const tempArr = [];
-  
-    let filteredDatas =
-      filterData === ""
-        ? data
-        : data.filter(
-            (item) => item?.category?.toLowerCase() === filterData.toLowerCase()
-          );
-    console.log(filterData);
-    tempArr.push(...tempArr ,filteredDatas);
-  
-  console.log(tempArr);
-
   return {
     type: ActionTypes.FILTER_BY_CATEGORY,
     payload: {
-      products:
-        filterData === ""
-          ? data
-          : data.filter(
-              (item) =>
-                item?.category?.toLowerCase() === filterData.toLowerCase()
-            ),
+      products: data.filter((item) => filterData.includes(item.category)),
     },
   };
 };
 
-// export const addCart = (products) =>{
-//     return {
-//         type : ActionTypes.ADD_CART,
-//         payload : products
-//     }
-// }
+export const addCart = (products) =>{
+    return {
+        type : ActionTypes.ADD_CART,
+        payload : products
+    }
+}
 
-// export const deleteCart = (products) =>{
-//     return {
-//         type : ActionTypes.DELETE_CART,
-//         payload : products
-//     }
-// }
+export const deleteCart = (products) =>{
+    return {
+        type : ActionTypes.DELETE_CART,
+        payload : products
+    }
+}

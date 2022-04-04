@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  addCart,
   removeSelectedProduct,
   selectedProduct,
 } from "../../../redux/actions/productAction";
@@ -18,11 +19,17 @@ function ProductDetails() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+
+  const addProduct = (product) => {
+    dispatch(addCart(product));
+  };
+
   useEffect(() => {
     if (token === null) {
       navigate("/login");
     }
   }, [navigate, token]);
+
   useEffect(() => {
     productID && productID !== "" && fetchProduct();
     return () => {
@@ -86,7 +93,7 @@ function ProductDetails() {
               >
                 Back
               </button>
-              <button className="ui secondary button">Add to Cart</button>
+              <button className="ui secondary button" onClick={() => addProduct(product)}>Add to Cart</button>
             </div>
           </div>
           <div className="col-span-2 my-2 text-justify text-xl font-semibold   lg:pr-20 xs:pr-20 md:px-10 sm:px-10 xs:px-10 ">
