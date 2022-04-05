@@ -10,32 +10,49 @@ function Header() {
   const [showLinks, setShowLinks] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const products = useSelector((state) => state.allProducts.products);
   const filterByCategoryProducts = useSelector(
     (state) => state.allProducts.filteredProductsByCategory
   );
+  console.log(filterByCategoryProducts);
   const cartProduct = useSelector((state) => state.handleCart);
 
-  console.log("filterByCategoryProducts ", filterByCategoryProducts);
   const temp = filterByCategoryProducts.map((item) => item.category);
   const tempArr = temp.filter((q, index) => temp.indexOf(q) === index);
 
-  // console.log("filterByCategoryProducts IN HEADER", tempArr);
-  console.log(tempArr);
-  console.log(
-    "hyyyyy",
-    products.filter((x) => 
-    x.category.includes(tempArr))
-  );
+  const tempFunc = (arr, data) => {
+    const temp = [];
+    if (arr.indexOf("men's clothing") !== -1) {
+      const men = data.filter((x) => x.category === "men's clothing");
+      temp.push(...men);
+    }
+    if (arr.indexOf("women's clothing") !== -1) {
+      const women = data.filter((x) => x.category === "women's clothing");
+      temp.push(...women);
+    }
+    if (arr.indexOf("jewelery") !== -1) {
+      const jewelery = data.filter((x) => x.category === "jewelery");
+      temp.push(...jewelery);
+    }
+    if (arr.indexOf("electronics") !== -1) {
+      const electronic = data.filter((x) => x.category === "electronics");
+      temp.push(...electronic);
+    }
+    return temp;
+  };
 
   useEffect(() => {
-    setData(filterByCategoryProducts);
-  }, [filterByCategoryProducts]);
-
-  const dispatch = useDispatch();
-  const location = useLocation();
+    const arr = tempFunc(tempArr, products);
+    console.log("arr ", arr);
+    // setData(arr);
+  }, [tempArr]);
+  
+  console.log(tempArr);
+  console.log("data ", data);
 
   useEffect(() => {
     location.pathname === "/product" || location.pathname === "/product/cart"

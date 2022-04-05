@@ -178,7 +178,7 @@ function Product() {
 
       return 0;
     });
-    dispatch(setProduct(sortedData));
+    dispatch(setProduct(tempArr, sortedData));
     setData(sortedData);
     setFlag(!flag);
   };
@@ -187,7 +187,7 @@ function Product() {
     <>
       <Headers />
       <Breadcrumb />
-
+  
       {isLoading ? (
         <div className="flex justify-center text-xl font-bold my-10 tracking-widest">
           Loading...
@@ -254,7 +254,7 @@ function Product() {
                 <div className="grid  xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-6 ">
                   {data && data.length ? (
                     data.map((product) => (
-                      <div className="justify-center bg-gray-300 xs:px-2 lg:mx-0 items-center border-2 border-gray-400 rounded-xl p-6">
+                      <div className="justify-center bg-gray-200 xs:px-2 lg:mx-0 items-center border-2 border-gray-400 rounded-xl p-6">
                         <img
                           src={product.image}
                           alt={product.title}

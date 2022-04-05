@@ -1,11 +1,28 @@
 import { ActionTypes } from "../constant/constants";
 
 export const setProduct = (arr, products) => {
-  const filteredData = products.filter((x) => x.category === arr)
-  console.log(filteredData);
+  const temp = [];
+    if (arr.indexOf("men's clothing") !== -1) {
+      const men = products.filter((x) => x.category === "men's clothing");
+      temp.push(...men);
+    }
+    if (arr.indexOf("women's clothing") !== -1) {
+      const women = products.filter((x) => x.category === "women's clothing");
+      temp.push(...women);
+    }
+    if (arr.indexOf("jewelery") !== -1) {
+      const jewelery = products.filter((x) => x.category === "jewelery");
+      temp.push(...jewelery);
+    }
+    if (arr.indexOf("electronics") !== -1) {
+      const electronic = products.filter((x) => x.category === "electronics");
+      temp.push(...electronic);
+    }
+    console.log("temp ", temp);
+
   return {
     type: ActionTypes.SET_PRODUCTS,
-    payload: products,
+    payload: temp,
   };
 };
 
@@ -23,11 +40,13 @@ export const removeSelectedProduct = () => {
 };
 
 export const searchProduct = (searchData, filterData, data) => {
-  console.log("data ",filterData);
-  console.log("data from header",data);
+  console.log("data ", filterData);
+  console.log("data from header", data);
 
- const filteredData =  data.filter((item) => filterData.includes(item.category))
- console.log("filtered Data ",filteredData );
+  const filteredData = data.filter((item) =>
+    filterData.includes(item.category)
+  );
+  console.log("filtered Data ", filteredData);
   return {
     type: ActionTypes.SEARCH_PRODUCTS,
     payload: {
@@ -52,16 +71,16 @@ export const filterByCategory = (filterData, data) => {
   };
 };
 
-export const addCart = (products) =>{
-    return {
-        type : ActionTypes.ADD_CART,
-        payload : products
-    }
-}
+export const addCart = (products) => {
+  return {
+    type: ActionTypes.ADD_CART,
+    payload: products,
+  };
+};
 
-export const deleteCart = (products) =>{
-    return {
-        type : ActionTypes.DELETE_CART,
-        payload : products
-    }
-}
+export const deleteCart = (products) => {
+  return {
+    type: ActionTypes.DELETE_CART,
+    payload: products,
+  };
+};
