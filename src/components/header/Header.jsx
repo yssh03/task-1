@@ -18,7 +18,6 @@ function Header() {
   const filterByCategoryProducts = useSelector(
     (state) => state.allProducts.filteredProductsByCategory
   );
-  console.log(filterByCategoryProducts);
   const cartProduct = useSelector((state) => state.handleCart);
 
   const temp = filterByCategoryProducts.map((item) => item.category);
@@ -47,12 +46,10 @@ function Header() {
 
   useEffect(() => {
     const arr = tempFunc(tempArr, products);
-    console.log("arr ", arr);
+    // console.log("arr ", arr);
     // setData(arr);
   }, [tempArr]);
   
-  console.log(tempArr);
-  console.log("data ", data);
 
   useEffect(() => {
     location.pathname === "/product" || location.pathname === "/product/cart"

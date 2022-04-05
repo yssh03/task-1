@@ -4,6 +4,7 @@ const initialState = {
   products: [],
   filteredProducts: [],
   filteredProductsByCategory: [],
+  searchDropdownList:[]
 };
 
 const cart = [];
@@ -16,14 +17,19 @@ export const productReducer = (state = initialState, action) => {
         products: action.payload,
         filteredProducts: action.payload,
         filteredProductsByCategory: action.payload,
+        searchDropdownList: action.payload
       };
 
     case ActionTypes.SEARCH_PRODUCTS:
       return { ...state, filteredProducts: action.payload.products };
 
     case ActionTypes.FILTER_BY_CATEGORY:
-      // console.log(action.payload.products);
       return { ...state, filteredProductsByCategory: action.payload.products };
+
+
+      case ActionTypes.SEARCH_DROPDOWN:
+        console.log(action.payload);
+        return {...state, searchDropdownList: action.payload}
 
     default:
       return state;

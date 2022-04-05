@@ -7,26 +7,10 @@ import axiosInstance from "../../AxiosUtils";
 import { useDispatch } from "react-redux";
 import {
   filterByCategory,
+  searchDropdown,
   setProduct,
 } from "../../../redux/actions/productAction";
 import Breadcrumb from "../../header/Breadcrumb";
-import { logDOM } from "@testing-library/react";
-
-const initialStateCheckBox = {
-  allProducts: true,
-  jewelryProducts: false,
-  menProducts: false,
-  womenProducts: false,
-  electronicProducts: false,
-};
-
-const categories = [
-  { id: 1, name: "men's clothing" },
-  { id: 2, name: "women's clothing" },
-  { id: 3, name: "jewelery" },
-  { id: 4, name: "electronics" },
-  { id: 5, name: "all" },
-];
 
 function Product() {
   const dispatch = useDispatch();
@@ -35,8 +19,14 @@ function Product() {
   const filterByCategoryProducts = useSelector(
     (state) => state.allProducts.filteredProductsByCategory
   );
+  const searchDropdownList = useSelector(
+    (state) => state.allProducts.searchDropdownList
+  );
+  console.log("searchDropdown ", searchDropdownList);
 
-  console.log("filterByCategoryProducts", filterByCategoryProducts);
+  useEffect(() => {
+    dispatch(searchDropdown("gold", products));
+  }, [products]);
 
   const tempArr = [
     "men's clothing",
@@ -44,6 +34,7 @@ function Product() {
     "electronics",
     "women's clothing",
   ];
+
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -183,11 +174,24 @@ function Product() {
     setFlag(!flag);
   };
 
+  console.log(
+    searchDropdownList && searchDropdownList.map((item) => item.title)
+  );
   return (
     <>
       <Headers />
       <Breadcrumb />
-  
+
+      <div>
+        {/* <select>
+          <option>search</option>
+          {searchDropdownList &&
+            searchDropdownList.map((item) => {
+              <option value={item.title}>{item.title}</option>;
+            })}
+        </select> */}
+      </div>
+
       {isLoading ? (
         <div className="flex justify-center text-xl font-bold my-10 tracking-widest">
           Loading...

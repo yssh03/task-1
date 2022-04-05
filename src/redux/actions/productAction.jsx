@@ -2,23 +2,23 @@ import { ActionTypes } from "../constant/constants";
 
 export const setProduct = (arr, products) => {
   const temp = [];
-    if (arr.indexOf("men's clothing") !== -1) {
-      const men = products.filter((x) => x.category === "men's clothing");
-      temp.push(...men);
-    }
-    if (arr.indexOf("women's clothing") !== -1) {
-      const women = products.filter((x) => x.category === "women's clothing");
-      temp.push(...women);
-    }
-    if (arr.indexOf("jewelery") !== -1) {
-      const jewelery = products.filter((x) => x.category === "jewelery");
-      temp.push(...jewelery);
-    }
-    if (arr.indexOf("electronics") !== -1) {
-      const electronic = products.filter((x) => x.category === "electronics");
-      temp.push(...electronic);
-    }
-    console.log("temp ", temp);
+  if (arr.indexOf("men's clothing") !== -1) {
+    const men = products.filter((x) => x.category === "men's clothing");
+    temp.push(...men);
+  }
+  if (arr.indexOf("women's clothing") !== -1) {
+    const women = products.filter((x) => x.category === "women's clothing");
+    temp.push(...women);
+  }
+  if (arr.indexOf("jewelery") !== -1) {
+    const jewelery = products.filter((x) => x.category === "jewelery");
+    temp.push(...jewelery);
+  }
+  if (arr.indexOf("electronics") !== -1) {
+    const electronic = products.filter((x) => x.category === "electronics");
+    temp.push(...electronic);
+  }
+  console.log("temp ", temp);
 
   return {
     type: ActionTypes.SET_PRODUCTS,
@@ -40,9 +40,6 @@ export const removeSelectedProduct = () => {
 };
 
 export const searchProduct = (searchData, filterData, data) => {
-  console.log("data ", filterData);
-  console.log("data from header", data);
-
   const filteredData = data.filter((item) =>
     filterData.includes(item.category)
   );
@@ -59,6 +56,18 @@ export const searchProduct = (searchData, filterData, data) => {
                 .includes(searchData.trimStart().toLowerCase())
             ),
     },
+  };
+};
+
+export const searchDropdown = (searchData, products) => {
+  const filteredData = products.filter((x) =>
+    x.title?.toLowerCase().includes(searchData.trimStart().toLowerCase())
+  );
+  console.log("search dropdown ", filteredData);
+  
+  return {
+    type: ActionTypes.SEARCH_DROPDOWN,
+    payload: filteredData,
   };
 };
 

@@ -11,7 +11,6 @@ function Cart() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(product);
 
   const addProduct = (product) => {
     dispatch(addCart(product));
