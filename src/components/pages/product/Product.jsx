@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosUtils";
 import { useDispatch } from "react-redux";
 import {
-  filterByCategory,
-  searchDropdown,
+  searchProduct,
   setProduct,
 } from "../../../redux/actions/productAction";
 import Breadcrumb from "../../header/Breadcrumb";
@@ -16,17 +15,7 @@ function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.allProducts.filteredProducts);
-  const filterByCategoryProducts = useSelector(
-    (state) => state.allProducts.filteredProductsByCategory
-  );
-  const searchDropdownList = useSelector(
-    (state) => state.allProducts.searchDropdownList
-  );
-  console.log("searchDropdown ", searchDropdownList);
-
-  useEffect(() => {
-    dispatch(searchDropdown("gold", products));
-  }, [products]);
+  const allProducts = useSelector((state) => state.allProducts);
 
   const tempArr = [
     "men's clothing",
@@ -38,6 +27,8 @@ function Product() {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+
   const [state, setState] = useState([
     {
       id: 1,
@@ -66,8 +57,8 @@ function Product() {
     {
       id: 5,
       name: "All",
-      checked: true,
       value: "ALL",
+      checked: true,
     },
   ]);
 
@@ -82,10 +73,6 @@ function Product() {
   useEffect(() => {
     setData(products);
   }, [products]);
-
-  useEffect(() => {
-    setData(filterByCategoryProducts);
-  }, [filterByCategoryProducts]);
 
   const fetchProduct = async () => {
     await axiosInstance
@@ -125,7 +112,10 @@ function Product() {
       });
 
       setState(newArr2);
-      dispatch(filterByCategory(newArr, products));
+
+      dispatch(
+        searchProduct(allProducts.searchValue, newArr, allProducts.products)
+      );
     } else {
       const newArr = state
         .filter((item) => item.checked === true)
@@ -140,9 +130,11 @@ function Product() {
 
         return item;
       });
-      setState(newArr2);
 
-      dispatch(filterByCategory(newArr, products));
+      setState(newArr2);
+      dispatch(
+        searchProduct(allProducts.searchValue, newArr, allProducts.products)
+      );
     }
   };
 
@@ -174,22 +166,39 @@ function Product() {
     setFlag(!flag);
   };
 
-  console.log(
-    searchDropdownList && searchDropdownList.map((item) => item.title)
-  );
+  const handleSearch = (e) => {
+    e.preventDefault();
+    dispatch(searchProduct(e.target.value, tempArr, products));
+  };
+
   return (
     <>
       <Headers />
       <Breadcrumb />
 
-      <div>
-        {/* <select>
-          <option>search</option>
-          {searchDropdownList &&
-            searchDropdownList.map((item) => {
-              <option value={item.title}>{item.title}</option>;
-            })}
-        </select> */}
+      <div className="navbar-rightside">
+        <form>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => {
+              handleSearch(e);
+              setSearchValue(e.target.value);
+            }}
+          />
+          <button type="submit" onClick={handleSearch}>
+            <i aria-hidden="true" class="search icon"></i>
+          </button>
+        </form>
+        <div className="relative">
+          <div className="inline-block justify-start text-left w-1/4 h-5 sticky top-0 left-0 right-0">
+            {products &&
+              products.map((x) => (
+                  <p className="cursor-pointer border-solid p-2  border-r-2 border-t-2 border-l-2 border-b-1 border-zinc-900" onClick={() => setSearchValue(x.title)}>{x.title}</p>
+              ))}
+          </div>
+        </div>
       </div>
 
       {isLoading ? (
@@ -233,23 +242,24 @@ function Product() {
             </div>
           </div>
           <div className="flex justify-center ">
-            {state.map((item, index) => (
-              <label class="inline-flex items-center m-3 cursor-pointer ">
-                <input
-                  id={item.id}
-                  name={item.name}
-                  value={item.value}
-                  type="checkbox"
-                  class="form-checkbox h-5 w-5 text-gray-600 cursor-pointer"
-                  // checked={check.allProducts}
-                  onChange={(e) => onFilterChange2(e, index)}
-                  checked={item.checked}
-                />
-                <span class="ml-2 text-gray-700 font-semibold ">
-                  {item.name}
-                </span>
-              </label>
-            ))}
+            <div className="grid  xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-3 ">
+              {state.map((item, index) => (
+                <label class="inline-flex items-center m-3 cursor-pointer ">
+                  <input
+                    id={item.id}
+                    name={item.name}
+                    value={item.value}
+                    type="checkbox"
+                    class="form-checkbox h-5 w-5 text-gray-600 cursor-pointer"
+                    onChange={(e) => onFilterChange2(e, index)}
+                    checked={item.checked}
+                  />
+                  <span class="ml-2 text-gray-700 font-semibold ">
+                    {item.name}
+                  </span>
+                </label>
+              ))}
+            </div>
           </div>
           {
             <div className="m-5">

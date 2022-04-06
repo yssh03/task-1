@@ -18,7 +18,6 @@ export const setProduct = (arr, products) => {
     const electronic = products.filter((x) => x.category === "electronics");
     temp.push(...electronic);
   }
-  console.log("temp ", temp);
 
   return {
     type: ActionTypes.SET_PRODUCTS,
@@ -39,35 +38,30 @@ export const removeSelectedProduct = () => {
   };
 };
 
-export const searchProduct = (searchData, filterData, data) => {
+export const searchProduct = (searchValue, filterData, data) => {
+  let searchData = searchValue ?? "";
+
   const filteredData = data.filter((item) =>
     filterData.includes(item.category)
   );
-  console.log("filtered Data ", filteredData);
+
   return {
     type: ActionTypes.SEARCH_PRODUCTS,
     payload: {
       products:
-        searchData === ""
-          ? filteredData
-          : filteredData.filter((item) =>
-              item?.title
+        searchData.length === 0
+          ? filteredData.length > 0
+            ? filteredData
+            : data
+          : filteredData.filter((item) => {
+              return item?.title
                 ?.toLowerCase()
-                .includes(searchData.trimStart().toLowerCase())
-            ),
-    },
-  };
-};
+                .includes(searchData.trimStart().toLowerCase());
+            }),
 
-export const searchDropdown = (searchData, products) => {
-  const filteredData = products.filter((x) =>
-    x.title?.toLowerCase().includes(searchData.trimStart().toLowerCase())
-  );
-  console.log("search dropdown ", filteredData);
-  
-  return {
-    type: ActionTypes.SEARCH_DROPDOWN,
-    payload: filteredData,
+      searchValue: searchData.trimStart().toLowerCase() || "",
+      selectedCategory: filterData,
+    },
   };
 };
 

@@ -7,49 +7,19 @@ import { searchProduct, setProduct } from "../../redux/actions/productAction";
 import "./Header.css";
 
 function Header() {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const products = useSelector((state) => state.allProducts.products);
+  const selectedCategory = useSelector(
+    (state) => state.allProducts.selectedCategory
+  );
+
+  const cartProduct = useSelector((state) => state.handleCart);
+
   const [showLinks, setShowLinks] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [data, setData] = useState();
-  const dispatch = useDispatch();
-  const location = useLocation();
-
-  const products = useSelector((state) => state.allProducts.products);
-  const filterByCategoryProducts = useSelector(
-    (state) => state.allProducts.filteredProductsByCategory
-  );
-  const cartProduct = useSelector((state) => state.handleCart);
-
-  const temp = filterByCategoryProducts.map((item) => item.category);
-  const tempArr = temp.filter((q, index) => temp.indexOf(q) === index);
-
-  const tempFunc = (arr, data) => {
-    const temp = [];
-    if (arr.indexOf("men's clothing") !== -1) {
-      const men = data.filter((x) => x.category === "men's clothing");
-      temp.push(...men);
-    }
-    if (arr.indexOf("women's clothing") !== -1) {
-      const women = data.filter((x) => x.category === "women's clothing");
-      temp.push(...women);
-    }
-    if (arr.indexOf("jewelery") !== -1) {
-      const jewelery = data.filter((x) => x.category === "jewelery");
-      temp.push(...jewelery);
-    }
-    if (arr.indexOf("electronics") !== -1) {
-      const electronic = data.filter((x) => x.category === "electronics");
-      temp.push(...electronic);
-    }
-    return temp;
-  };
-
-  useEffect(() => {
-    const arr = tempFunc(tempArr, products);
-    // console.log("arr ", arr);
-    // setData(arr);
-  }, [tempArr]);
-  
+  const [tempArr, setTempArr] = useState([]);
 
   useEffect(() => {
     location.pathname === "/product" || location.pathname === "/product/cart"
@@ -58,12 +28,16 @@ function Header() {
   }, [location.pathname]);
 
   useEffect(() => {
-    searchValue === "" && dispatch(setProduct(tempArr, products));
-  }, [searchValue]);
+    console.log("selectedCategory", selectedCategory);
+    setTempArr(selectedCategory);
+  }, [selectedCategory]);
+
+
+  console.log("searchValue ", searchValue);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(searchProduct(searchValue, tempArr, products));
+    dispatch(searchProduct(e.target.value, tempArr, products));
   };
 
   return (
