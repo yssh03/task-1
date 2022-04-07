@@ -27,6 +27,8 @@ function Header() {
       : setShowSearch(false);
   }, [location.pathname]);
 
+console.log("header tempArr", tempArr);
+
   useEffect(() => {
     console.log("selectedCategory", selectedCategory);
     setTempArr(selectedCategory);

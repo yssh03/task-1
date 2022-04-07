@@ -3,8 +3,14 @@ import { ActionTypes } from "../constant/constants";
 const initialState = {
   products: [],
   filteredProducts: [],
+  searchList: [],
   searchValue: "",
-  selectedCategory: [],
+  selectedCategory: [
+    "men's clothing",
+    "jewelery",
+    "electronics",
+    "women's clothing",
+  ],
 };
 
 const cart = [];
@@ -19,12 +25,24 @@ export const productReducer = (state = initialState, action) => {
         searchDropdownList: action.payload,
       };
 
+    case ActionTypes.UPDATE_SEARCH_VALUE:
+      return {
+        ...state,
+        searchValue: action.payload,
+      };
+
     case ActionTypes.SEARCH_PRODUCTS:
       return {
         ...state,
         filteredProducts: action.payload.products,
         searchValue: action.payload.searchValue,
         selectedCategory: action.payload.selectedCategory,
+      };
+
+    case ActionTypes.SEARCH_LIST:
+      return {
+        ...state,
+        searchList: action.payload.products,
       };
 
     default:

@@ -52,7 +52,7 @@ export const searchProduct = (searchValue, filterData, data) => {
         searchData.length === 0
           ? filteredData.length > 0
             ? filteredData
-            : data
+            : []
           : filteredData.filter((item) => {
               return item?.title
                 ?.toLowerCase()
@@ -65,12 +65,48 @@ export const searchProduct = (searchValue, filterData, data) => {
   };
 };
 
+export const searchList = (searchValue, filterData, data) => {
+  let searchData = searchValue ?? "";
+
+  const filteredData = data.filter((item) =>
+    filterData.includes(item.category)
+  );
+
+  return {
+    type: ActionTypes.SEARCH_LIST,
+    payload: {
+      products:
+        searchData.length === 0
+          ? filteredData.length > 0
+            ? filteredData
+            : []
+          : filteredData.filter((item) => {
+              return item?.title
+                ?.toLowerCase()
+                .includes(searchData.trimStart().toLowerCase());
+            }),
+
+      searchValue: searchData.trimStart().toLowerCase() || "",
+      selectedCategory: filterData,
+    },
+  };
+};
+
+
+
 export const filterByCategory = (filterData, data) => {
   return {
     type: ActionTypes.FILTER_BY_CATEGORY,
     payload: {
       products: data.filter((item) => filterData.includes(item.category)),
     },
+  };
+};
+
+export const updateSearchValue = (searchData) => {
+  return {
+    type: ActionTypes.UPDATE_SEARCH_VALUE,
+    payload: searchData,
   };
 };
 

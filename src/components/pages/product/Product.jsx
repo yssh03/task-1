@@ -6,28 +6,38 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosUtils";
 import { useDispatch } from "react-redux";
 import {
+  searchList,
   searchProduct,
   setProduct,
+  updateSearchValue,
 } from "../../../redux/actions/productAction";
 import Breadcrumb from "../../header/Breadcrumb";
 
 function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const products = useSelector((state) => state.allProducts.filteredProducts);
-  const allProducts = useSelector((state) => state.allProducts);
+  const searchProducts = useSelector(
+    (state) => state.allProducts.searchList
+  );
 
-  const tempArr = [
+  const allProducts = useSelector((state) => state.allProducts);
+  const selectedCategory = useSelector(
+    (state) => state.allProducts.selectedCategory
+  );
+
+  console.log("searchProducts ", searchProducts);
+
+  const [tempArr, setTempArr] = useState([
     "men's clothing",
     "jewelery",
     "electronics",
     "women's clothing",
-  ];
+  ]);
 
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchValue, setSearchValue] = useState("");
+  const [isHidden, setIsHidden] = useState(false);
 
   const [state, setState] = useState([
     {
@@ -71,8 +81,18 @@ function Product() {
   }, [navigate, token]);
 
   useEffect(() => {
-    setData(products);
-  }, [products]);
+    setData(allProducts.filteredProducts);
+  }, [allProducts.filteredProducts]);
+
+  useEffect(() => {
+    setTempArr(selectedCategory);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    dispatch(
+      searchProduct(allProducts.searchValue, tempArr, allProducts.products)
+    );
+  }, []);
 
   const fetchProduct = async () => {
     await axiosInstance
@@ -93,6 +113,10 @@ function Product() {
     fetchProduct();
   }, []);
 
+  useEffect(() => {
+    allProducts.searchValue === "" ? setIsHidden(false) : setIsHidden(true);
+  }, [allProducts.searchValue]);
+
   const onFilterChange2 = (e, id) => {
     let tempArr = [...state];
     tempArr[id].checked = !tempArr[id].checked;
@@ -112,7 +136,6 @@ function Product() {
       });
 
       setState(newArr2);
-
       dispatch(
         searchProduct(allProducts.searchValue, newArr, allProducts.products)
       );
@@ -168,8 +191,19 @@ function Product() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(searchProduct(e.target.value, tempArr, products));
+    dispatch(
+      searchList(e.target.value, tempArr, allProducts.products)
+    );
   };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(
+      searchProduct(allProducts.searchValue, tempArr, allProducts.products)
+    );
+  };
+
+  console.log("searchValue ", allProducts.searchValue);
 
   return (
     <>
@@ -181,24 +215,36 @@ function Product() {
           <input
             type="text"
             placeholder="Search..."
-            value={searchValue}
+            value={allProducts.searchValue}
             onChange={(e) => {
               handleSearch(e);
-              setSearchValue(e.target.value);
+              dispatch(updateSearchValue(e.target.value));
             }}
           />
-          <button type="submit" onClick={handleSearch}>
+          <button type="submit" onClick={handleClick}>
             <i aria-hidden="true" class="search icon"></i>
           </button>
         </form>
-        <div className="relative">
-          <div className="inline-block justify-start text-left w-1/4 h-5 sticky top-0 left-0 right-0">
-            {products &&
-              products.map((x) => (
-                  <p className="cursor-pointer border-solid p-2  border-r-2 border-t-2 border-l-2 border-b-1 border-zinc-900" onClick={() => setSearchValue(x.title)}>{x.title}</p>
-              ))}
+        {isHidden && (
+          <div className="">
+            <div className="inline-block justify-start text-left w-1/4 h-5 border-solid mt-2 ">
+              {searchProducts && searchProducts.length > 0 ? (
+                searchProducts.map((x) => (
+                  <p
+                    className="cursor-pointer z-auto border-solid p-2  border-r border-t font-bold border-l border-b  border-zinc-900"
+                    onClick={() => dispatch(updateSearchValue(x.title))}
+                  >
+                    {x.title}
+                  </p>
+                ))
+              ) : (
+                <p className="cursor-pointer flex justify-center border-solid p-2  border-2 font-bold text-lg border-zinc-900">
+                  Product not found :(
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {isLoading ? (
