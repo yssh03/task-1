@@ -16,9 +16,7 @@ import Breadcrumb from "../../header/Breadcrumb";
 function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const searchProducts = useSelector(
-    (state) => state.allProducts.searchList
-  );
+  const searchProducts = useSelector((state) => state.allProducts.searchList);
 
   const allProducts = useSelector((state) => state.allProducts);
   const selectedCategory = useSelector(
@@ -191,9 +189,12 @@ function Product() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(
-      searchList(e.target.value, tempArr, allProducts.products)
-    );
+    const value = e.target.value;
+    dispatch(searchList(e.target.value, tempArr, allProducts.products));
+    value === "" &&
+      dispatch(
+        searchProduct(allProducts.searchValue, tempArr, allProducts.products)
+      );
   };
 
   const handleClick = (e) => {
@@ -214,6 +215,7 @@ function Product() {
         <form>
           <input
             type="text"
+            list="data"
             placeholder="Search..."
             value={allProducts.searchValue}
             onChange={(e) => {
@@ -227,22 +229,23 @@ function Product() {
         </form>
         {isHidden && (
           <div className="">
-            <div className="inline-block justify-start text-left w-1/4 h-5 border-solid mt-2 ">
-              {searchProducts && searchProducts.length > 0 ? (
+            <datalist id="data" className="inline-block justify-start text-left w-1/4 h-5 border-solid mt-2 ">
+              {searchProducts && searchProducts.length > 0 && 
                 searchProducts.map((x) => (
-                  <p
-                    className="cursor-pointer z-auto border-solid p-2  border-r border-t font-bold border-l border-b  border-zinc-900"
+                  <option
+                  value={x.title}
+                    // className="cursor-pointer z-auto border-solid p-2  border-r border-t font-bold border-l border-b  border-zinc-900"
                     onClick={() => dispatch(updateSearchValue(x.title))}
                   >
-                    {x.title}
-                  </p>
-                ))
-              ) : (
-                <p className="cursor-pointer flex justify-center border-solid p-2  border-2 font-bold text-lg border-zinc-900">
-                  Product not found :(
-                </p>
+                    {/* {x.title} */}
+                  </option>
+                )
+              // ) : (
+              //   <option className="cursor-pointer flex justify-center border-solid p-2  border-2 font-bold text-lg border-zinc-900">
+              //     Product not found :(
+              //   </option>
               )}
-            </div>
+            </datalist>
           </div>
         )}
       </div>

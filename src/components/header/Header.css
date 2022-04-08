@@ -122,6 +122,10 @@ a:active {
   font-weight: 400;
 }
 
+input[list]{
+  background: red;
+}
+
 .navbar-rightside button {
   height: 30px;
   width: 50px;

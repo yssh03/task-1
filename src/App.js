@@ -21,11 +21,11 @@ function App() {
           <Route path="/product/:productID" element={<ProductDetails />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
-
           <Route path="/product/cart" element={<Cart />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </BrowserRouter>
+      {/* <Search /> */}
     </div>
   );
 }
